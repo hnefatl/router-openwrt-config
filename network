@@ -1,56 +1,54 @@
-
 config interface 'loopback'
-	option device 'lo'
-	option proto 'static'
-	option ipaddr '127.0.0.1'
-	option netmask '255.0.0.0'
+  option device 'lo'
+  option proto 'static'
+  option ipaddr '127.0.0.1'
+  option netmask '255.0.0.0'
 
 config globals 'globals'
-	option ula_prefix 'fdd5:8e5e:08b2::/48'
+  option ula_prefix 'fdd5:8e5e:08b2::/48'
 
 config device
-	option name 'br-lan'
-	option type 'bridge'
-	list ports 'eth0.1'
+  option name 'br-lan'
+  option type 'bridge'
+  list ports 'eth0.1'
 
 config device
-	option name 'eth0.1'
-	option macaddr '10:0c:6b:33:63:fb'
+  option name 'eth0.1'
+  option macaddr '10:0c:6b:33:63:fb'
 
 config interface 'lan'
-	option device 'br-lan'
-	option proto 'static'
-	option ip6assign '60'
-	option ipaddr '192.168.0.1'
-	option netmask '255.255.0.0'
-	list dns '192.168.0.3'
+  option device 'br-lan'
+  option proto 'static'
+  option ip6assign '60'
+  option ipaddr '192.168.0.1'
+  option netmask '255.255.0.0'
+  list dns '192.168.0.3'
 
 config device
-	option name 'eth0.2'
-	option macaddr '10:0C:6B:33:63:FC'
+  option name 'eth0.2'
+  option macaddr '10:0C:6B:33:63:FC'
 
 config interface 'wan'
-	option device 'eth0.2'
-	option proto 'dhcp'
-	option type 'bridge'
+  option device 'eth0.2'
+  option proto 'dhcp'
+  option type 'bridge'
 
 config interface 'wan6'
-	option device 'eth0.2'
-	option proto 'dhcpv6'
-	option type 'bridge'
+  option device 'eth0.2'
+  option proto 'dhcpv6'
+  option type 'bridge'
 
 config switch
-	option name 'switch0'
-	option reset '1'
-	option enable_vlan '1'
+  option name 'switch0'
+  option reset '1'
+  option enable_vlan '1'
 
 config switch_vlan
-	option device 'switch0'
-	option vlan '1'
-	option ports '0 1 2 3 5t'
+  option device 'switch0'
+  option vlan '1'
+  option ports '0 1 2 3 5t'
 
 config switch_vlan
-	option device 'switch0'
-	option vlan '2'
-	option ports '4 5t'
-
+  option device 'switch0'
+  option vlan '2'
+  option ports '4 5t'
