@@ -2,6 +2,7 @@
 
 gen_files=(
   wireless
+  ddns
 )
 
 source secrets.sh
