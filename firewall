@@ -5,6 +5,7 @@ config defaults
 	option forward 'REJECT'
 	option synflood_protect '1'
 	option flow_offloading '1'
+	option flow_offloading_hw '1'
 
 config zone
 	option name 'lan'
@@ -26,6 +27,22 @@ config zone
 config forwarding
 	option src 'lan'
 	option dest 'wan'
+
+config rule
+	option name 'Server-HTTP'
+	option src 'wan'
+	option dest 'lan'
+	option dest_port '80'
+	option target 'ACCEPT'
+	option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
+
+config rule
+	option name 'Server-HTTPS'
+	option src 'wan'
+	option dest 'lan'
+	option dest_port '443'
+	option target 'ACCEPT'
+	option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
 
 config rule
 	option name 'Allow-DHCP-Renew'
@@ -129,7 +146,7 @@ config rule
 	option proto 'udp'
 	option family 'ipv4'
 	option target 'REJECT'
-	option enabled 'false'
+	option enabled '0'
 
 config include
 	option path '/etc/firewall.user'
