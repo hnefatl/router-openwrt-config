@@ -35,6 +35,7 @@ config rule
   option target 'ACCEPT'
   option family 'ipv4'
 
+config rule
   option name 'Server-HTTP'
   option src 'wan'
   option dest 'lan'
@@ -42,6 +43,7 @@ config rule
   option target 'ACCEPT'
   option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
   
+config rule
   option name 'Server-HTTPS'
   option src 'wan'
   option dest 'lan'
