@@ -1,3 +1,4 @@
+
 config system
 	option ttylogin '0'
 	option log_size '64'
@@ -15,31 +16,15 @@ config timeserver 'ntp'
 	list server '2.openwrt.pool.ntp.org'
 	list server '3.openwrt.pool.ntp.org'
 
-config led 'led_usb2'
-	option name 'USB 2.0'
-	option sysfs 'bcm53xx:white:usb2'
-	option trigger 'usbport'
-	list port 'usb1-port2'
-	list port 'usb2-port2'
+config gpio_switch 'poe_passthrough'
+	option name 'PoE Passthrough'
+	option gpio_pin '497'
+	option value '0'
 
-config led 'led_usb3'
-	option name 'USB 3.0'
-	option sysfs 'bcm53xx:white:usb3'
-	option trigger 'usbport'
-	list port 'usb1-port1'
-	list port 'usb2-port1'
-	list port 'usb4-port1'
-
-config led
-	option sysfs 'bcm53xx:white:2ghz'
+config led 'led_sfp'
+	option name 'SFP'
+	option sysfs 'blue:sfp'
 	option trigger 'netdev'
-	option dev 'wlan1'
-	list mode 'tx'
-	list mode 'rx'
+	option mode 'link tx rx'
+	option dev 'sfp'
 
-config led
-	option sysfs 'bcm53xx:white:5ghz-2'
-	option trigger 'netdev'
-	option dev 'wlan2'
-	list mode 'tx'
-	list mode 'rx'

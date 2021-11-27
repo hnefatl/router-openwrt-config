@@ -1,7 +1,6 @@
 #!/bin/bash
 
 gen_files=(
-  wireless
   ddns
 )
 
