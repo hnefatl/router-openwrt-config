@@ -1,3 +1,4 @@
+
 config defaults
 	option input 'ACCEPT'
 	option output 'ACCEPT'
@@ -42,7 +43,7 @@ config rule
 	option dest_port '80'
 	option target 'ACCEPT'
 	option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
-	
+
 config rule
 	option name 'Server-HTTPS'
 	option src 'wan'
@@ -149,3 +150,22 @@ config rule
 
 config include
 	option path '/etc/firewall.user'
+
+config redirect
+	option target 'DNAT'
+	option name 'http'
+	option src 'wan'
+	option src_dport '80'
+	option dest 'lan'
+	option dest_ip '192.168.0.3'
+	option dest_port '80'
+
+config redirect
+	option target 'DNAT'
+	option name 'https'
+	option src 'wan'
+	option src_dport '443'
+	option dest 'lan'
+	option dest_ip '192.168.0.3'
+	option dest_port '443'
+
