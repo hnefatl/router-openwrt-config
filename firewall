@@ -7,22 +7,23 @@ config defaults
 	option flow_offloading '1'
 	option flow_offloading_hw '1'
 
-config zone
+config zone 'lan'
 	option name 'lan'
-	list network 'lan'
 	option input 'ACCEPT'
 	option output 'ACCEPT'
 	option forward 'ACCEPT'
+	list network 'lan'
+	list network 'wireguard'
 
-config zone
+config zone 'wan'
 	option name 'wan'
-	list network 'wan'
-	list network 'wan6'
 	option input 'REJECT'
 	option output 'ACCEPT'
 	option forward 'REJECT'
 	option masq '1'
 	option mtu_fix '1'
+	list network 'wan'
+	list network 'wan6'
 
 config forwarding
 	option src 'lan'
@@ -146,7 +147,7 @@ config rule
 	option proto 'udp'
 	option family 'ipv4'
 	option target 'REJECT'
-	option enabled 'false'
+	option enabled '0'
 
 config include
 	option path '/etc/firewall.user'
@@ -168,4 +169,17 @@ config redirect
 	option dest 'lan'
 	option dest_ip '192.168.0.3'
 	option dest_port '443'
+
+config rule 'wg'
+	option name 'Allow-WireGuard'
+	option src 'wan'
+	option dest_port '5746'
+	option proto 'udp'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-SSH'
+	option src 'wan'
+	option dest_port '22'
+	option target 'ACCEPT'
 

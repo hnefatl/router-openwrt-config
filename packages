@@ -9,3 +9,7 @@ luci-app-ddns
 wget-ssl
 ca-certificates
 drill
+
+luci-proto-wireguard
+luci-app-wireguard
+qrencode

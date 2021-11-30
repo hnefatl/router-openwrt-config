@@ -62,3 +62,19 @@ config interface 'wan6'
 	option device 'br-wan'
 	option proto 'dhcpv6'
 
+config interface 'wg0'
+	option proto 'wireguard'
+	option private_key '${wireguard_private_key}'
+	option listen_port '5746'
+	list addresses '192.168.5.1/24'
+
+config wireguard_wireguard 'kcollister'
+	option description 'kcollister'
+	option public_key '${wireguard_kcollister_public_key}'
+	list allowed_ips '192.168.5.1/32'
+
+config wireguard_wireguard 'pixel4xl'
+	option description 'pixel4xl'
+	option public_key '${wireguard_pixel4xl_public_key}'
+	list allowed_ips '192.168.5.2/32'
+
