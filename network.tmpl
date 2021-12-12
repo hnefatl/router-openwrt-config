@@ -78,3 +78,13 @@ config wireguard_wireguard 'pixel4xl'
 	option public_key '${wireguard_pixel4xl_public_key}'
 	list allowed_ips '192.168.5.2/32'
 
+config route
+	option interface 'lan'
+	option target '192.168.4.0/24'
+	option netmask '255.255.255.0'
+	option gateway '192.168.1.3'
+
+config route6
+	option interface 'lan'
+	option target 'fdf3:685c:acae:d0ca::/64'
+	option gateway 'fdf3:685c:acae::2a2'

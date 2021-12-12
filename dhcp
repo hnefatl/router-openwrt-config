@@ -43,7 +43,7 @@ config dhcp 'lan'
 	list ra_flags 'managed-config'
 	list ra_flags 'other-config'
 	# Allow routing to docker containers via server
-        list dhcp_option '121,192.168.4.0/24,192.168.1.3'
+        #list dhcp_option '121,192.168.4.0/24,192.168.1.3'
 	#list dhcp_option '121,2a02:169:5bef:d0ca::/64,2a02:169:5bef::2a2'
 
 config odhcpd 'odhcpd'
