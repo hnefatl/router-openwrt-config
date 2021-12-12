@@ -80,4 +80,3 @@ config host
 	option name 'Phillips-Bridge'
 	option mac 'EC:B5:FA:80:77:5F'
 	option ip '192.168.2.11'
-
