@@ -1,13 +1,26 @@
 #!/bin/bash
 
-gen_files=(
-  ddns
-)
+gen_files=(ddns network)
+
+if [[ "$1" != "" && "$1" != "--dry-run" ]] ; then
+    echo "Unknown command $1"
+    exit 2
+fi
 
 source secrets.sh
-for gen_file in "${gen_files[@]}" ; do
+for source_file in "${gen_files[@]}" ; do
+  output_file="$source_file"
+  if [[ "$1" == "--dry-run" ]] ; then
+    output_file="$(mktemp)"
+  fi
+
   eval "cat <<EOF
-$(<$gen_file.tmpl)
-EOF" > "$gen_file"
-  chmod u=r,g=r "$gen_file"
+$(<$source_file.tmpl)
+EOF" > "$output_file"
+
+  if [[ "$1" == "--dry-run" ]] ; then
+    diff "$source_file" "$output_file" || exit 1
+  else
+    chmod u=r,g=r "$output_file"
+  fi
 done
