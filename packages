@@ -3,6 +3,7 @@ openssh-sftp-server
 iperf
 vim
 diffutils
+etherwake
 
 # For dynamic DNS
 ddns-scripts
