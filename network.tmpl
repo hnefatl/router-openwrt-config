@@ -68,15 +68,20 @@ config interface 'wg0'
 	option listen_port '5746'
 	list addresses '10.20.5.1/24'
 
-config wireguard_wireguard 'kcollister'
-	option description 'kcollister'
+config wireguard_wg0 'kcollister'
+	option description 'kcollister laptop'
 	option public_key '${wireguard_kcollister_public_key}'
-	list allowed_ips '10.20.5.1/32'
+	list allowed_ips '10.20.5.4/32'
 
-config wireguard_wireguard 'pixel4xl'
-	option description 'pixel4xl'
+config wireguard_wg0 'corp_phone'
+	option description 'Corp phone'
 	option public_key '${wireguard_pixel4xl_public_key}'
 	list allowed_ips '10.20.5.2/32'
+
+config wireguard_wg0 'personal_phone'
+	option description 'Personal phone'
+	option public_key '${wireguard_personal_phone_public_key}'
+	list allowed_ips '10.20.5.3/32'
 
 config route
 	option interface 'lan'

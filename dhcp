@@ -62,9 +62,9 @@ config boot 'linux'
 	option servername 'warthog'
 
 config host
-	option ip '10.20.0.2'
-	option mac '10:0C:6B:33:63:FB'
 	option name 'access-point'
+	option mac '10:0C:6B:33:63:FB'
+	option ip '10.20.0.2'
 
 config host
 	option name 'hoover'
@@ -72,11 +72,16 @@ config host
 	option ip '10.20.2.10'
 
 config host
-	option mac '5C:87:9C:BD:7B:C1'
-	option ip '10.20.2.12'
-	option name 'work-laptop'
-
-config host
 	option name 'Phillips-Bridge'
 	option mac 'EC:B5:FA:80:77:5F'
 	option ip '10.20.2.11'
+
+config host
+	option name 'work-laptop'
+	option mac '5C:87:9C:BD:7B:C1'
+	option ip '10.20.2.12'
+
+config host
+	option name 'Shield'
+	option mac '48:B0:2D:59:CF:A7'
+	option ip '10.20.2.13'
