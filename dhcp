@@ -24,13 +24,14 @@ config dnsmasq
 	option resolvfile '/tmp/resolv.conf.d/resolv.conf.auto'
 	option localservice '1'
 	option ednspacket_max '1232'
-	list server '10.20.1.3#53'
 	list address '/warthog.keith.collister.xyz/10.20.1.3'
 	list address '/warthog.keith.collister.xyz/fdf3:685c:acae::2a2'
 	list address '/ha.keith.collister.xyz/10.20.1.3'
 	list address '/ha.keith.collister.xyz/fdf3:685c:acae::2a2'
 	list address '/lan/10.20.1.3'
 	list address '/lan/fdf3:685c:acae::2a2'
+	list server '10.20.1.3#53'
+	list server 'fdf3:685c:acae::2a2#53'
 
 config dhcp 'lan'
 	option interface 'lan'
@@ -72,7 +73,7 @@ config host
 	option ip '10.20.2.10'
 
 config host
-	option name 'Phillips-Bridge'
+	option name 'phillips-bridge'
 	option mac 'EC:B5:FA:80:77:5F'
 	option ip '10.20.2.11'
 
@@ -82,6 +83,11 @@ config host
 	option ip '10.20.2.12'
 
 config host
-	option name 'Shield'
+	option name 'shield'
 	option mac '48:B0:2D:59:CF:A7'
 	option ip '10.20.2.13'
+
+config host
+	option name 'pc'
+	option mac 'A8:5E:45:11:03:D8'
+	option ip '10.20.2.5'
