@@ -10,3 +10,4 @@ network
 # Don't think this is used/important, but it has something that might be a
 # password.
 rpcd
+etherwake
