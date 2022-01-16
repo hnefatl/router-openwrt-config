@@ -17,6 +17,9 @@ config device
 	list ports 'lan4'
 	list ports 'lan5'
 	list ports 'wan'
+    # On Init7 with Hex S there are weird occasional network drops when
+    # using IPv6. Still need to finish debugging.
+	option ipv6 '0'
 
 config device
 	option name 'lan2'

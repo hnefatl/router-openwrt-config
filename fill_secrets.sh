@@ -9,11 +9,13 @@ fi
 
 source secrets.sh
 for source_file in "${gen_files[@]}" ; do
+  echo "$source_file"
   output_file="$source_file"
   if [[ "$1" == "--dry-run" ]] ; then
     output_file="$(mktemp)"
   fi
 
+  chmod u+w "$output_file"
   eval "cat <<EOF
 $(<$source_file.tmpl)
 EOF" > "$output_file"
