@@ -178,10 +178,10 @@ config rule 'wg'
 	option target 'ACCEPT'
 
 #config rule
-#	option name 'Allow-SSH'
-#	option src 'wan'
-#	option dest_port '22'
-#	option target 'ACCEPT'
+#    option name 'Allow-SSH'
+#    option src 'wan'
+#    option dest_port '22'
+#    option target 'ACCEPT'
 
 config redirect
 	option target 'DNAT'
@@ -191,3 +191,12 @@ config redirect
 	option dest 'lan'
 	option dest_ip '10.20.1.3'
 	option dest_port '32400'
+
+config redirect
+	option target 'DNAT'
+	option name 'external dns'
+	option src 'wan'
+	option src_dport '53'
+	option dest 'lan'
+	option dest_port '1273'
+	option dest_ip '10.20.1.3'
