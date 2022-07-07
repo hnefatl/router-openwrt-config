@@ -1,0 +1,14 @@
+$ORIGIN .
+$TTL 60	; 1 minute
+ha.keith.collister.xyz	IN SOA	keithdns.collister.xyz. hnefatl.gmail.com. (
+				18         ; serial
+				3600       ; refresh (1 hour)
+				1800       ; retry (30 minutes)
+				604800     ; expire (1 week)
+				600        ; minimum (10 minutes)
+				)
+			NS	keithdns.collister.xyz.
+$TTL 600	; 10 minutes
+			A	81.6.45.24
+$ORIGIN ha.keith.collister.xyz.
+*			A	81.6.45.24

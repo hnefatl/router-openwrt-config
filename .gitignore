@@ -11,3 +11,6 @@ network
 # password.
 rpcd
 etherwake
+
+# Temporary editor files
+**/*~

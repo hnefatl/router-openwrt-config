@@ -5,6 +5,9 @@ vim
 diffutils
 etherwake
 
+bind-server
+bind-tools
+
 # For dynamic DNS
 ddns-scripts
 luci-app-ddns
