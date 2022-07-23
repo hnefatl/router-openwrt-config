@@ -177,11 +177,11 @@ config rule 'wg'
 	option proto 'udp'
 	option target 'ACCEPT'
 
-#config rule
-#    option name 'Allow-SSH'
-#    option src 'wan'
-#    option dest_port '22'
-#    option target 'ACCEPT'
+config rule
+    option name 'Allow-SSH'
+    option src 'wan'
+    option dest_port '22'
+    option target 'ACCEPT'
 
 config redirect
 	option target 'DNAT'
