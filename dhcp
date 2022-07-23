@@ -92,3 +92,8 @@ config host
 	option name 'pc'
 	option mac 'A8:5E:45:11:03:D8'
 	option ip '10.20.2.5'
+
+config host
+	option name 'lg-tv'
+	option mac '74:E6:B8:03:0B:B0'
+	option ip '10.20.2.6'
