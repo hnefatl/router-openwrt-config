@@ -63,6 +63,13 @@ config boot 'linux'
 	option serveraddress '10.20.1.3'
 	option servername 'warthog'
 
+# Hack for if restoring a home assistant backup: give the new vm the right IP
+# before we get a chance to set the IP statically.
+config host
+	option name 'homeassistant'
+	option mac '52:54:00:D6:0B:F4'
+	option ip '10.20.1.2'
+
 config host
 	option name 'access-point'
 	option mac '10:0C:6B:33:63:FB'
