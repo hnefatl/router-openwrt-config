@@ -7,7 +7,7 @@ config interface 'loopback'
 
 config globals 'globals'
 	option packet_steering '1'
-	option ula_prefix 'fdf3:685c:acae::/48'
+	#option ula_prefix 'fdf3:685c:acae::/48'
 
 config device
 	option name 'br-lan'
@@ -43,6 +43,7 @@ config interface 'lan'
 	option ip6assign '60'
 	option ipaddr '10.20.0.1'
 	option netmask '255.255.0.0'
+	list ip6class 'local'
 
 config device
 	option name 'br-wan'
