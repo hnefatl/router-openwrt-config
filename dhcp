@@ -7,6 +7,7 @@
 #            4        printer (HP 5010 keeps trying to use 192.168.1.x/24)
 # 10.20.2.0/24     DHCP reservations (e.g. hoover, smart light hub) which use
 #                    DHCP but are given fixed addresses
+#            5        PC
 # 10.20.3.0/24     open season, DHCP dynamic assignment space
 # 10.20.4.0/24     docker, if I can work out how to get it to allocate real
 #                    IPs for some containers.
