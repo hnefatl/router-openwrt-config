@@ -7,7 +7,7 @@ if [[ "$1" != "" && "$1" != "--dry-run" ]] ; then
     exit 2
 fi
 
-source secrets.sh
+source /external_usb/secrets.sh
 for source_file in "${gen_files[@]}" ; do
   echo "$source_file"
   output_file="$source_file"

@@ -15,3 +15,8 @@ drill
 luci-proto-wireguard
 luci-app-wireguard
 qrencode
+
+kmod-usb-storage
+usbutils
+f2fs-tools
+kmod-fs-f2fs
