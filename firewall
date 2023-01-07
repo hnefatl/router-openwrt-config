@@ -12,8 +12,6 @@ config zone 'lan'
     option input 'ACCEPT'
     option output 'ACCEPT'
     option forward 'ACCEPT'
-    # Required so that the router can forward packets between lan and wg0.
-    option masq '1'
     list network 'lan'
     list network 'wg0'
 

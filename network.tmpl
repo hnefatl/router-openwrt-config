@@ -70,30 +70,31 @@ config interface 'wg0'
     option proto 'wireguard'
     option private_key '${wireguard_private_key}'
     option listen_port '5746'
-    list allowed_ips '10.20.69.1/16'
+    list allowed_ips '10.29.0.0/24'
+    list addresses '10.29.0.1/24'
 
 config wireguard_wg0 'corp_laptop'
     option description 'Corp Laptop'
     option public_key '${wireguard_corp_laptop_public_key}'
-    list allowed_ips '10.20.69.1/32'
+    list allowed_ips '10.29.0.2/32'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'personal_phone'
     option description 'Personal phone'
     option public_key '${wireguard_personal_phone_public_key}'
-    list allowed_ips '10.20.69.3/32'
+    list allowed_ips '10.29.0.3/32'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'corp_phone'
     option description 'Corp Phone'
     option public_key '${wireguard_corp_phone_public_key}'
-    list allowed_ips '10.20.69.5/32'
+    list allowed_ips '10.29.0.5/32'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'rosies_pi'
     option description "Rosie's Pi"
     option public_key '${wireguard_rosies_pi_public_key}'
-    list allowed_ips '10.20.69.6/32'
+    list allowed_ips '10.29.0.6/32'
     option route_allowed_ips '1'
 
 # Attempts at getting docker containers to be routable
