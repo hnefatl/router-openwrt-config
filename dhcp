@@ -9,8 +9,7 @@
 #                    DHCP but are given fixed addresses
 #            5        PC
 # 10.20.3.0/24     open season, DHCP dynamic assignment space
-# 10.20.4.0/24     docker, if I can work out how to get it to allocate real
-#                    IPs for some containers.
+# 10.20.4.0/24     docker
 # 10.20.5.0/24     VPN devices.
 
 config dnsmasq
@@ -30,10 +29,7 @@ config dnsmasq
     list address '/warthog.keith.collister.xyz/fdf3:685c:acae::2a2'
     list address '/ha.keith.collister.xyz/10.20.1.3'
     list address '/ha.keith.collister.xyz/fdf3:685c:acae::2a2'
-    list address '/lan/10.20.1.3'
-    list address '/lan/fdf3:685c:acae::2a2'
     list server '10.20.1.3#53'
-    list server 'fdf3:685c:acae::2a2#53'
 
 config dhcp 'lan'
     option interface 'lan'
@@ -42,9 +38,8 @@ config dhcp 'lan'
     option leasetime '12h'
     option dhcpv4 'server'
     list ra_flags 'none'
-    # Allow routing to docker containers via server
-        #list dhcp_option '121,10.20.4.0/24,10.20.1.3'
-    #list dhcp_option '121,2a02:169:5bef:d0ca::/64,2a02:169:5bef::2a2'
+    # Another place to inject DNS server.
+    list dhcp_option '6,10.20.1.3'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
