@@ -11,7 +11,9 @@
 #            5        PC
 # 10.20.3.0/24     open season, DHCP dynamic assignment space
 # 10.20.4.0/24     docker
-# 10.20.5.0/24     VPN devices.
+# 10.20.5.0/24     embedded devices, e.g. esp32.
+#
+# 10.21.0.0/24     VPN devices.
 
 config dnsmasq
     option domainneeded '1'
@@ -98,6 +100,11 @@ config host
     option name 'lg-tv'
     option mac '74:E6:B8:03:0B:B0'
     option ip '10.20.2.6'
+
+config host
+    option name 'esp32-bluetooth-proxy'
+    option mac 'C8:F0:9E:35:85:F4'
+    option ip '10.20.5.2'
 
 config host
     option name 'pikvm'
