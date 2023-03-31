@@ -9,6 +9,6 @@ config global
 
 config mount
 	option target '/external_usb'
-	option uuid '7ca3ff69-c6b4-44c1-ad89-4e1fdc52d293'
+	option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
 	option enabled '1'
 
