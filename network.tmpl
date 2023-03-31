@@ -105,11 +105,10 @@ config wireguard_wg0 'corp_phone'
     list allowed_ips '10.29.0.5/32'
     option route_allowed_ips '1'
 
-config wireguard_wg0 'rosies_pi'
-    option disabled '1'
-    option description "Rosie's Pi"
-    option public_key '${wireguard_rosies_pi_public_key}'
-    list allowed_ips '10.29.0.6/32'
+config wireguard_wg0 'parents_house'
+    option description "Parent's House"
+    option public_key '${wireguard_parents_house_public_key}'
+    list allowed_ips '10.29.0.7/32'
     option route_allowed_ips '1'
 
 # Attempts at getting docker containers to be routable
