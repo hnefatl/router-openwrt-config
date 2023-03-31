@@ -42,7 +42,7 @@ config dhcp 'lan'
     option dhcpv4 'server'
     list ra_flags 'none'
     # Another place to inject DNS server.
-    list dhcp_option '6,10.20.1.3'
+    #list dhcp_option '6,10.20.1.3'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
