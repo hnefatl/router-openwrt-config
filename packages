@@ -20,3 +20,6 @@ kmod-usb-storage
 usbutils
 f2fs-tools
 kmod-fs-f2fs
+
+# For home assistant
+luci-mod-rpc
