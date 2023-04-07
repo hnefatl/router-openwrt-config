@@ -6,6 +6,8 @@
 #            3        warthog (physical server)
 #            4        printer (HP 5010 keeps trying to use 192.168.1.x/24)
 #            5        pikvm
+#            6        server cpu
+#            7        octoprint
 # 10.20.2.0/24     DHCP reservations (e.g. hoover, smart light hub) which use
 #                    DHCP but are given fixed addresses
 #            5        PC
@@ -115,3 +117,8 @@ config host
     option name 'servercpu'
     option mac '00:30:59:28:D0:00'
     option ip '10.20.1.6'
+
+config host
+    option name 'octoprint'
+    option mac 'DC:A6:32:50:9D:BB'
+    option ip '10.20.1.7'
