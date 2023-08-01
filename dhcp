@@ -122,3 +122,8 @@ config host
     option name 'octoprint'
     option mac 'DC:A6:32:50:9D:BB'
     option ip '10.20.1.7'
+
+config host
+    option name 'crash'
+    option mac '52:54:00:3C:9B:6A'
+    option ip '10.20.1.8'
