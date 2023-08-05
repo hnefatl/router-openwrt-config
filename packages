@@ -23,3 +23,11 @@ kmod-fs-f2fs
 
 # For home assistant
 luci-mod-rpc
+
+# For SD card drivers
+kmod-sdhci-mt7620
+# For mounting SD card as an extroot storage expansion
+block-mount
+kmod-fs-ext4
+e2fsprogs
+parted
