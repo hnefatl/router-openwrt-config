@@ -31,3 +31,5 @@ block-mount
 kmod-fs-ext4
 e2fsprogs
 parted
+
+adguardhome

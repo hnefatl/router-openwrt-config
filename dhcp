@@ -17,11 +17,14 @@
 #
 # 10.21.0.0/24     VPN devices.
 
+# Adguard is used as the primary DNS resolver, dnsmasq is used as a fallback once adguard has filtered out ads.
 config dnsmasq
+    option port '54'
     option domainneeded '1'
+    # Allow PTR requests
+    option noresolv '0'
     option localise_queries '1'
-    option rebind_protection '1'
-    option rebind_localhost '1'
+    option rebind_protection '0'
     option local '/lan/'
     option domain 'lan'
     option expandhosts '1'
@@ -34,7 +37,7 @@ config dnsmasq
     list address '/warthog.keith.collister.xyz/fdf3:685c:acae::2a2'
     list address '/ha.keith.collister.xyz/10.20.1.3'
     list address '/ha.keith.collister.xyz/fdf3:685c:acae::2a2'
-    list server '10.20.1.3#53'
+    list server '10.20.0.1'
 
 config dhcp 'lan'
     option interface 'lan'
@@ -43,8 +46,10 @@ config dhcp 'lan'
     option leasetime '12h'
     option dhcpv4 'server'
     list ra_flags 'none'
-    # Another place to inject DNS server.
-    #list dhcp_option '6,10.20.1.3'
+    # Default router/last resort gateway is this device.
+    list dhcp_option '3,10.20.0.1'
+    # DNS is this device.
+    list dhcp_option '6,10.20.0.1'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
@@ -85,7 +90,7 @@ config host
 
 config host
     option name 'work-laptop'
-    option mac '5C:87:9C:BD:7B:C1'
+    option mac '88:d8:2e:54:5a:1a'
     option ip '10.20.2.12'
 
 config host
