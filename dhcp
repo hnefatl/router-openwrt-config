@@ -126,3 +126,8 @@ config host
     option name 'crash'
     option mac '52:54:00:3C:9B:6A'
     option ip '10.20.1.8'
+
+config host
+    option name 'nintendo-switch'
+    option mac '20:1C:3A:BF:89:8C'
+    option ip '10.20.1.9'
