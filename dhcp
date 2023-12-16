@@ -10,10 +10,11 @@
 #            7        octoprint
 # 10.20.2.0/24     DHCP reservations (e.g. hoover, smart light hub) which use
 #                    DHCP but are given fixed addresses
-#            5        PC
+#            5     PC
+#            6     physical TV
+#            13    NVIDIA Shield
 # 10.20.3.0/24     open season, DHCP dynamic assignment space
 # 10.20.4.0/24     docker
-# 10.20.5.0/24     embedded devices, e.g. esp32.
 #
 # 10.21.0.0/24     VPN devices.
 
@@ -99,7 +100,7 @@ config host
 
 config host
     option name 'lg-tv'
-    option mac '74:E6:B8:03:0B:B0'
+    option mac '20:28:BC:14:12:8E'
     option ip '10.20.2.6'
 
 config host
