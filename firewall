@@ -201,3 +201,13 @@ config redirect
     option dest 'lan'
     option dest_port '1273'
     option dest_ip '10.20.1.3'
+
+config rule
+    option name 'Block-TV-Internet'
+    option src 'lan'
+    option dest 'wan'
+    option target 'REJECT'
+    list src_ip '10.20.2.6'
+    list proto 'tcp'
+    list proto 'udp'
+
