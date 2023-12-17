@@ -85,13 +85,14 @@ config host
     option name 'phillips-bridge'
     option mac 'EC:B5:FA:80:77:5F'
     option ip '10.20.2.11'
+    # Detect DHCP misconfigs quickly. Lights not turning on isn't the end of
+    # the world, but very obvious to know something needs fixing.
+    option leasetime '10m'
 
 config host
     option name 'work-laptop'
     option mac '88:d8:2e:54:5a:1a'
     option ip '10.20.2.12'
-    # Detect DHCP misconfigs quickly.
-    option leasetime '10m'
 
 config host
     option name 'shield'
@@ -102,8 +103,6 @@ config host
     option name 'pc'
     option mac 'A8:5E:45:11:03:D8'
     option ip '10.20.2.5'
-    # Detect DHCP misconfigs quickly.
-    option leasetime '10m'
 
 config host
     option name 'lg-tv'
