@@ -38,9 +38,10 @@ config dhcp 'lan'
     option interface 'lan'
     option start '770'
     option limit '253'
-    # Low lease time to make sure any misconfigs/breakages are detected quickly
-    # after config update, not the following day.
-    option leasetime '10m'
+    # Some hosts have lower lease times (to detect DHCP misconfigurations
+    # faster), but keep the default high so that in the event of a breakage,
+    # things keep working for 12h.
+    option leasetime '12h'
     option dhcpv4 'server'
     list ra_flags 'none'
     # Default router/last resort gateway is this device.
@@ -89,6 +90,8 @@ config host
     option name 'work-laptop'
     option mac '88:d8:2e:54:5a:1a'
     option ip '10.20.2.12'
+    # Detect DHCP misconfigs quickly.
+    option leasetime '10m'
 
 config host
     option name 'shield'
@@ -99,6 +102,8 @@ config host
     option name 'pc'
     option mac 'A8:5E:45:11:03:D8'
     option ip '10.20.2.5'
+    # Detect DHCP misconfigs quickly.
+    option leasetime '10m'
 
 config host
     option name 'lg-tv'
