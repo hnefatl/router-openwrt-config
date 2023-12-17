@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gen_files=(ddns network)
+readarray -t gen_files < <(ls *.tmpl | sed 's/\.tmpl$//')
 
 if [[ "$1" != "" && "$1" != "--dry-run" ]] ; then
     echo "Unknown command $1"
@@ -8,20 +8,24 @@ if [[ "$1" != "" && "$1" != "--dry-run" ]] ; then
 fi
 
 source /external_usb/secrets.sh
-for source_file in "${gen_files[@]}" ; do
-  echo "$source_file"
-  output_file="$source_file"
+for output_file in "${gen_files[@]}" ; do
+  input_file="${output_file}.tmpl"
+
   if [[ "$1" == "--dry-run" ]] ; then
     output_file="$(mktemp)"
   fi
 
+  echo "Filling $output_file from $input_file"
+
   chmod u+w "$output_file"
+  # Substitute any variables. Not secure, but easy.
   eval "cat <<EOF
-$(<$source_file.tmpl)
+$(<$input_file)
 EOF" > "$output_file"
 
   if [[ "$1" == "--dry-run" ]] ; then
-    diff "$source_file" "$output_file" || exit 1
+    diff "$input_file" "$output_file"
+    rm "$output_file"
   else
     chmod u=r,g=r "$output_file"
   fi
