@@ -38,7 +38,9 @@ config dhcp 'lan'
     option interface 'lan'
     option start '770'
     option limit '253'
-    option leasetime '12h'
+    # Low lease time to make sure any misconfigs/breakages are detected quickly
+    # after config update, not the following day.
+    option leasetime '10m'
     option dhcpv4 'server'
     list ra_flags 'none'
     # Default router/last resort gateway is this device.
