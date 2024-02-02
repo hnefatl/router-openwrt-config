@@ -2,7 +2,6 @@
 #            1        router, static IP since runs DHCP
 #            2        access point (old router). Assigned using DHCP fixed lease.
 # 10.20.1.0/24     statically configured things:
-#            2        homeassistant (virtual server)
 #            3        warthog (physical server)
 #            4        printer (HP 5010 keeps trying to use 192.168.1.x/24)
 #            5        pikvm
@@ -63,13 +62,6 @@ config boot 'linux'
     option filename 'netboot.xyz.efi'
     option serveraddress '10.20.1.3'
     option servername 'warthog'
-
-# Hack for if restoring a home assistant backup: give the new vm the right IP
-# before we get a chance to set the IP statically.
-config host
-    option name 'homeassistant'
-    option mac '52:54:00:D6:0B:F4'
-    option ip '10.20.1.2'
 
 config host
     option name 'access-point'
