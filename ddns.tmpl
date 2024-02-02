@@ -6,16 +6,19 @@ config ddns 'global'
     option ddns_logdir '/var/log/ddns'
     option cacert '/etc/ssl/certs'
 
-config service 'external_dns_ipv4'
-    option enabled '1'
-    option service_name 'google.com'
-    option username '${external_dns_keithdns_ipv4_username}'
-    option password '${external_dns_keithdns_ipv4_password}'
-    option use_https '1'
-    option cacert '/etc/ssl/certs'
-    option domain 'keithdns.collister.xyz'
-    option lookup_host 'keithdns.collister.xyz'
-    option ip_source 'network'
-    option ip_network 'wan'
-    option interface 'wan'
+config service "external_ipv4_keithdns"
+        option enabled          "1"
+        option domain           "keithdns.duckdns.org"
+        option service_name     'duckdns.org'
+        option username         "keithdns"
+        option password         "$external_dns_keithdns_ipv4_password"
+        option ip_source        "network"
+        option ip_network       "wan"
+        option interface        'wan'
+        option force_interval   "72"
+        option force_unit       "hours"
+        option check_interval   "10"
+        option check_unit       "minutes"
+        option update_url       "http://www.duckdns.org/update?domains=[USERNAME]&token=[PASSWORD]&ip=[IP]"
+        #option use_https       "1"
 
