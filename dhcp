@@ -32,6 +32,10 @@ config dnsmasq
     option localservice '1'
     option ednspacket_max '1232'
     list server '10.20.0.1'
+    # Some manual redirections. There's no point redirecting to a reverse proxy
+    # for these, since they're probably accessed when the server is down or unhealthy.
+    list address '/pikvm.warthog.keith.collister.xyz/10.20.1.5'
+    list address '/servercpu.warthog.keith.collister.xyz/10.20.1.6'
 
 config dhcp 'lan'
     option interface 'lan'
