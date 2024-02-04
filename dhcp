@@ -19,7 +19,7 @@
 
 # Adguard is used as the primary DNS resolver, dnsmasq is used as a fallback once adguard has filtered out ads.
 config dnsmasq
-    option port '54'
+    option port '53'
     # Allow PTR requests
     option noresolv '0'
     option localise_queries '1'
@@ -31,7 +31,7 @@ config dnsmasq
     option resolvfile '/tmp/resolv.conf.d/resolv.conf.auto'
     option localservice '1'
     option ednspacket_max '1232'
-    list server '10.20.0.1'
+    list server '10.20.0.1#54'
     # Some manual redirections. There's no point redirecting to a reverse proxy
     # for these, since they're probably accessed when the server is down or unhealthy.
     list address '/pikvm.warthog.keith.collister.xyz/10.20.1.5'
