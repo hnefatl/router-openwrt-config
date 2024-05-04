@@ -16,7 +16,6 @@ config device
     list ports 'lan3'
     list ports 'lan4'
     list ports 'lan5'
-    list ports 'wan'
     # On Init7 with Hex S there are weird occasional network drops when
     # using IPv6. Still need to finish debugging.
     option ipv6 '0'
@@ -52,10 +51,12 @@ config device
     option name 'br-wan'
     option type 'bridge'
     list ports 'sfp'
+    list ports 'wan'
 
 config device
     option name 'wan'
-    option macaddr 'dc:2c:6e:02:6b:06'
+    # MAC is important because it's allowlisted by ISP.
+    option macaddr '${wan_ethernet_mac_address}'
 
 config device
     option name 'sfp'
