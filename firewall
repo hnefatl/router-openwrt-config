@@ -211,3 +211,12 @@ config rule
     list proto 'tcp'
     list proto 'udp'
 
+config redirect
+    option target 'DNAT'
+    option name 'Roll20'
+    option src 'wan'
+    option src_dport '23482'
+    option dest 'lan'
+    option dest_port '3389'
+    option dest_ip '10.20.1.10'
+

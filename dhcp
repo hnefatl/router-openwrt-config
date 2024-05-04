@@ -134,3 +134,8 @@ config host
     option name 'nintendo-switch'
     option mac '20:1C:3A:BF:89:8C'
     option ip '10.20.1.9'
+
+config host
+    option name 'roll20'
+    option mac '52:54:00:c7:1e:f5'
+    option ip '10.20.1.10'
