@@ -16,8 +16,7 @@ config device
     list ports 'lan3'
     list ports 'lan4'
     list ports 'lan5'
-    # On Init7 with Hex S there are weird occasional network drops when
-    # using IPv6. Still need to finish debugging.
+    # Hyperoptic doesn't seem to handle IPv6 well atm.
     option ipv6 '0'
 
 config device
