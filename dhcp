@@ -16,6 +16,10 @@
 # 10.20.4.0/24     docker
 #
 # 10.21.0.0/24     VPN devices.
+#
+#
+# DNS routing goes:
+#  dnsmasq (router#53) -> adguard (router#54) -> bind9 (warthog#1273)
 
 # Adguard is used as the primary DNS resolver, dnsmasq is used as a fallback once adguard has filtered out ads.
 config dnsmasq
@@ -32,6 +36,13 @@ config dnsmasq
     option localservice '1'
     option ednspacket_max '1232'
     list server '10.20.0.1#54'
+    # Redirect internally hosted sites to the router's internal interface directly, to
+    # avoid resolving the sites as the router's external IP, causing internal clients to
+    # show up as external IPs when connecting over e.g. VPN.
+    # TODO: this causes https:// to fail since the certs aren't valid for local IPs :(
+    # unsure how to fix this properly, VPN remains broken until then.
+    #list address '/keithdns.collister.xyz/10.20.0.1'
+    #list address '/warthog.keith.collister.xyz/10.20.0.1'
     # Some manual redirections. There's no point redirecting to a reverse proxy
     # for these, since they're probably accessed when the server is down or unhealthy.
     list address '/pikvm.warthog.keith.collister.xyz/10.20.1.5'
