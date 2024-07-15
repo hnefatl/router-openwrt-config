@@ -15,13 +15,15 @@ config timeserver 'ntp'
     list server '2.openwrt.pool.ntp.org'
     list server '3.openwrt.pool.ntp.org'
 
+# Hex S only supports passive PoE, not 802.3af, so isn't useful for e.g. 5V switches.
+# Just disable it, to avoid frying anything expecting active PoE.
 # Enable PoE output on the 5th LAN port.
 # I'm not sure if this is always hardwired on now, so non-PoE
 # devices might get fried if plugged in? Yikes.
-config gpio_switch 'poe_passthrough'
-    option name 'PoE Passthrough'
-    option gpio_pin '497'
-    option value '1'
+#config gpio_switch 'poe_passthrough'
+#    option name 'PoE Passthrough'
+#    option gpio_pin '497'
+#    option value '1'
 
 config led 'led_sfp'
     option name 'SFP'
