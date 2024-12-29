@@ -103,7 +103,10 @@ config host
 
 config host
     option name 'shield'
+    # Ethernet
     option mac '48:B0:2D:59:CF:A7'
+    # Wifi
+    #option mac '48:B0:2D:59:CF:A5'
     option ip '10.20.2.13'
 
 config host
