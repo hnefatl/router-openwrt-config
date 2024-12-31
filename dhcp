@@ -103,10 +103,8 @@ config host
 
 config host
     option name 'shield'
-    # Ethernet
-    option mac '48:B0:2D:59:CF:A7'
-    # Wifi
-    #option mac '48:B0:2D:59:CF:A5'
+    # Wifi + ethernet
+    option mac '48:B0:2D:59:CF:A5 48:B0:2D:59:CF:A7'
     option ip '10.20.2.13'
 
 config host
@@ -146,7 +144,8 @@ config host
 
 config host
     option name 'nintendo-switch'
-    option mac '20:1C:3A:BF:89:8C'
+    # Wifi + ethernet
+    option mac 'DC:CD:18:5B:D9:50 20:1C:3A:BF:89:8C'
     option ip '10.20.1.9'
 
 config host
