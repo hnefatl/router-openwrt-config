@@ -117,6 +117,12 @@ config wireguard_wg0 'parents_display_pi'
     list allowed_ips '10.29.0.8/32'
     option route_allowed_ips '1'
 
+config wireguard_wg0 'personal_laptop'
+    option description "Personal Laptop"
+    option public_key '${wireguard_personal_laptop_public_key}'
+    list allowed_ips '10.29.0.9/32'
+    option route_allowed_ips '1'
+
 # Attempts at getting docker containers to be routable
 #config route
 #    option interface 'lan'
