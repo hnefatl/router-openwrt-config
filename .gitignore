@@ -1,18 +1,3 @@
-# Files ignored here are mostly because they contain secrets (passwords etc)
-# Instead the actual files are generated from template files.
-secrets.sh
-
-# Contains network passphrases...
-wireless
-ddns
-network
-
-# Don't think this is used/important, but it has something that might be a
-# password.
-rpcd
-etherwake
-
-# Temporary editor files
-**/*~
-
-**/*.swp
+/.direnv/
+# `nix build` output
+/result
