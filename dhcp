@@ -130,7 +130,8 @@ config host
 
 config host
     option name 'octoprint'
-    option mac 'DC:A6:32:50:9D:BB'
+    # Ethernet + Wifi
+    option mac 'D8:3A:DD:58:45:CD D8:3A:DD:58:45:CE'
     option ip '10.20.1.7'
 
 config host
