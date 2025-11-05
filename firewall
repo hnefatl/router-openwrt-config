@@ -170,6 +170,15 @@ config redirect
     option dest_port '443'
     option dest_ip '10.20.1.3'
 
+config redirect
+    option target 'DNAT'
+    option name 'vintagestory'
+    option src 'wan'
+    option src_dport '42420'
+    option dest 'lan'
+    option dest_port '42420'
+    option dest_ip '10.20.1.3'
+
 config rule 'wg'
     option name 'Allow-WireGuard'
     option src 'wan'
@@ -210,13 +219,4 @@ config rule
     list src_ip '10.20.2.6'
     list proto 'tcp'
     list proto 'udp'
-
-config redirect
-    option target 'DNAT'
-    option name 'Roll20'
-    option src 'wan'
-    option src_dport '23482'
-    option dest 'lan'
-    option dest_port '3389'
-    option dest_ip '10.20.1.10'
 
