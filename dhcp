@@ -21,15 +21,20 @@
 #
 # DNS routing goes:
 #  dnsmasq (router#53) -> adguard (router#54) -> bind9 (warthog#1273)
+#
+# DNS resolution should use the local device names provided by `config host` below,
+# *as long as the DHCP lease exists*: if the device hasn't connected recently, the
+# resolution will fail.
+# `config domain` also provides static DNS resolutions for devices without a DHCP lease.
 
 # Adguard is used as the primary DNS resolver, dnsmasq is used as a fallback once adguard has filtered out ads.
 config dnsmasq
     option port '53'
-    # Allow PTR requests
     option noresolv '0'
     option localise_queries '1'
     option rebind_protection '0'
     option domain 'lan'
+    option local '/lan/'
     option expandhosts '1'
     option authoritative '1'
     option leasefile '/tmp/dhcp.leases'
@@ -154,3 +159,20 @@ config host
     option name 'roll20'
     option mac '52:54:00:c7:1e:f5'
     option ip '10.20.1.10'
+
+# Required to resolve devices without DHCP leases.
+config domain
+    option name "warthog"
+    option ip "10.20.1.3"
+
+config domain
+    option name "router"
+    option ip "10.20.0.1"
+
+config domain
+    option name "ap1"
+    option ip "10.20.0.2"
+
+config domain
+    option name "ap2"
+    option ip "10.20.0.3"
