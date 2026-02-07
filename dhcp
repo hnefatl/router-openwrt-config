@@ -104,7 +104,7 @@ config host
     option ip '10.20.2.13'
 
 config host
-    option name 'pc'
+    option name 'desktop'
     option mac 'A8:5E:45:11:03:D8'
     option ip '10.20.2.5'
 
@@ -112,6 +112,11 @@ config host
     option name 'lg-tv'
     option mac '20:28:BC:14:12:8E'
     option ip '10.20.2.6'
+
+config host
+    option name 'laptop'
+    option mac '84:9E:56:9C:75:29'
+    option ip '10.20.2.7'
 
 config host
     option name 'esp32-bluetooth-proxy'
