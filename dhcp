@@ -63,11 +63,16 @@ config dhcp 'lan'
     # things keep working for 12h.
     option leasetime '12h'
     option dhcpv4 'server'
-    list ra_flags 'none'
     # Default router/last resort gateway is this device.
     list dhcp_option '3,10.20.0.1'
     # DNS is this device.
     list dhcp_option '6,10.20.0.1'
+    # ipv6 config
+    option ra 'server'
+	option dns_service '0'
+    list ra_flags 'none'
+	# Required to prevent clients trying to use dhcpv6 instead of slaac.
+	option dhcpv6 'disabled'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
