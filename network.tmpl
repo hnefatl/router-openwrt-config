@@ -7,7 +7,7 @@ config interface 'loopback'
 
 config globals 'globals'
     option packet_steering '1'
-    #option ula_prefix 'fdf3:685c:acae::/48'
+    option ula_prefix 'fdf3:685c:acae::/48'
 
 config device
     option name 'br-lan'
@@ -16,8 +16,7 @@ config device
     list ports 'lan3'
     list ports 'lan4'
     list ports 'lan5'
-    # Hyperoptic doesn't seem to handle IPv6 well atm.
-    option ipv6 '0'
+    option ipv6 '1'
 
 config device
     option name 'lan2'
@@ -38,13 +37,14 @@ config device
 config interface 'lan'
     option device 'br-lan'
     option proto 'static'
-    option ip6assign '60'
     option ipaddr '10.20.0.1'
     option netmask '255.255.0.0'
     # Setting DNS here enforces captive DNS, but also means if the server
     # is down there's no DNS resolution. For now, I'll take availability.
     #list dns '10.20.1.3'
-    list ip6class 'local'
+    option ip6assign '60'
+    # Only assign local ipv6 addresses.
+    #list ip6class 'local'
 
 config device
     option name 'br-wan'
