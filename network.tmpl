@@ -42,7 +42,13 @@ config interface 'lan'
     # Setting DNS here enforces captive DNS, but also means if the server
     # is down there's no DNS resolution. For now, I'll take availability.
     #list dns '10.20.1.3'
-    option ip6assign '60'
+    # Set the subnet for this interface: with a prefix of 2a01:4b00:bd20:7000::/56,
+    # this gives a subnet of 2a01:4b00:bd20:7001::/60, so SLAAC can allocate
+    # /64 addresses within the net.
+    # TODO: use a vlan for each subnet, so can split different device categories
+    # into different subnets (and do firewalling etc).
+    option ip6hint '01'
+    option ip6assign '64'
     # Only assign local ipv6 addresses.
     #list ip6class 'local'
 
