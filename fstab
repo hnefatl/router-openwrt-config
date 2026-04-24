@@ -1,27 +1,27 @@
 
 config global
-	option anon_swap '0'
-	option anon_mount '0'
-	option auto_swap '1'
-	option auto_mount '1'
-	option delay_root '5'
-	option check_fs '0'
+    option anon_swap '0'
+    option anon_mount '0'
+    option auto_swap '1'
+    option auto_mount '1'
+    option delay_root '5'
+    option check_fs '0'
 
 # Mount external USB with data required for persistence between installs.
 config mount
-	option target '/external_usb'
-	option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
-	option enabled '1'
+    option target '/external_usb'
+    option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
+    option enabled '1'
 
 # Mount the original overlay device so we can access it if necessary
 config mount
-	option target '/rootfs_data_original'
-	option device 'mtdblock9'
-	option enabled '1'
+    option target '/rootfs_data_original'
+    option device 'mtdblock9'
+    option enabled '1'
 
 # Mount over the overlay with the external SD card.
 config mount
-	option target '/overlay'
-	option uuid '7f0f1d6e-04f0-7443-b81a-85665d48f8f4'
-	option enabled '1'
+    option target '/overlay'
+    option uuid '7f0f1d6e-04f0-7443-b81a-85665d48f8f4'
+    option enabled '1'
 
