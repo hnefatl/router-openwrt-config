@@ -69,10 +69,10 @@ config dhcp 'lan'
     list dhcp_option '6,10.20.0.1'
     # ipv6 config
     option ra 'server'
-	option dns_service '0'
+    option dns_service '0'
     list ra_flags 'none'
-	# Required to prevent clients trying to use dhcpv6 instead of slaac.
-	option dhcpv6 'disabled'
+    # Required to prevent clients trying to use dhcpv6 instead of slaac.
+    option dhcpv6 'disabled'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
