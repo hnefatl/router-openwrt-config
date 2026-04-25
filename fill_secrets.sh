@@ -32,3 +32,7 @@ EOF" > "$output_file"
     chmod u=r,g=r "$output_file"
   fi
 done
+
+# Kind of a hack to do here, but needs to live somewhere.
+ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+
