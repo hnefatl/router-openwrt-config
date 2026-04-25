@@ -1,7 +1,0 @@
-#!/bin/bash
-
-./fill_secrets.sh --dry-run
-if [[ $? -ne 0 ]] ; then
-    echo "Found diffs in files containing secrets: run ./fill_secrets?"
-    exit 1
-fi

@@ -1,20 +1,24 @@
-# Files ignored here are mostly because they contain secrets (passwords etc)
-# Instead the actual files are generated from template files.
-secrets.sh
+# Files in the top level are added by `sync.py`: they should be ignored because they're either symlinked or templated from other files.
+# But any new additions after e.g. an update, should show up in `git status`.
+/adguardhome
+/attendedsysupgrade
+/dhcp
+/dropbear
+/firewall
+/fstab
+/luci
+/network
+/packages
+/system
+/ubihealthd
+/uhttpd
+/wireless
 
-# Contains network passphrases...
-wireless
-ddns
-network
-# More secrets
-adguardhome.yaml
+/secrets.toml
 
-# Don't think this is used/important, but it has something that might be a
-# password.
-rpcd
-etherwake
+# These aren't filled out by `sync.py`, but also aren't tracked by git because they're not interesting.
+/rpcd
 
 # Temporary editor files
 **/*~
-
 **/*.swp
