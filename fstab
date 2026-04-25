@@ -11,6 +11,7 @@ config mount
     option target '/external_usb'
     option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
     option enabled '1'
+    option options 'ro,noexec'
 
 # Mount the original overlay device so we can access it if necessary
 config mount
