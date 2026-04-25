@@ -18,6 +18,7 @@ config uhttpd 'main'
     option http_keepalive '20'
     option tcp_keepalive '1'
     option ubus_prefix '/ubus'
+    list ucode_prefix '/cgi-bin/luci=/usr/share/ucode/luci/uhttpd.uc'
 
 config cert 'defaults'
     option days '397'
