@@ -1,4 +1,3 @@
-
 config global
     option anon_swap '0'
     option anon_mount '0'
@@ -22,6 +21,6 @@ config mount
 # Mount over the overlay with the external SD card.
 config mount
     option target '/overlay'
-    option uuid '7f0f1d6e-04f0-7443-b81a-85665d48f8f4'
+    option uuid '4a3ae55a-84fe-4cca-a1a3-7762fdcc13b9'
     option enabled '1'
 
