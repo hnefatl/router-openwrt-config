@@ -13,7 +13,6 @@ ca-certificates
 drill
 
 luci-proto-wireguard
-luci-app-wireguard
 qrencode
 
 kmod-usb-core
