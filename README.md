@@ -1,5 +1,7 @@
 # README
 
+Configs for my network devices. `sync.py` handles symlinking or templating the configs to the right places.
+
 ## Fresh Installs
 
 If the config is wiped (e.g. due to a firmware bump that requires deleting settings), here are the high-level steps to follow:
