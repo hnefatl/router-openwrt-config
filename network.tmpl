@@ -17,22 +17,6 @@ config device
     list ports 'lan5'
     option ipv6 '1'
 
-config device
-    option name 'lan2'
-    option macaddr 'dc:2c:6e:02:6b:06'
-
-config device
-    option name 'lan3'
-    option macaddr 'dc:2c:6e:02:6b:06'
-
-config device
-    option name 'lan4'
-    option macaddr 'dc:2c:6e:02:6b:06'
-
-config device
-    option name 'lan5'
-    option macaddr 'dc:2c:6e:02:6b:06'
-
 config interface 'lan'
     option device 'br-lan'
     option proto 'static'
@@ -61,10 +45,6 @@ config device
     option ipv6 '1'
     # MAC is important because it's allowlisted by ISP.
     option macaddr '${wan_ethernet_mac_address}'
-
-config device
-    option name 'sfp'
-    option macaddr 'dc:2c:6e:02:6b:05'
 
 config interface 'wan'
     option device 'br-wan'
