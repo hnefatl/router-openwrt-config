@@ -16,7 +16,9 @@ luci-proto-wireguard
 luci-app-wireguard
 qrencode
 
+kmod-usb-core
 kmod-usb-storage
+kmod-fs-vfat
 usbutils
 f2fs-tools
 kmod-fs-f2fs

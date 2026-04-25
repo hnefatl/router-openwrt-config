@@ -76,9 +76,11 @@ config dhcp 'lan'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
-    option leasefile '/tmp/hosts/odhcpd'
+    option leasefile '/tmp/odhcpd.leases'
     option leasetrigger '/usr/sbin/odhcpd-update'
     option loglevel '4'
+    option piodir '/tmp/odhcpd-piodir'
+    option hostsdir '/tmp/hosts'
 
 config dhcp 'wan'
     option interface 'wan'
@@ -181,3 +183,4 @@ config domain
 config domain
     option name "ap2"
     option ip "10.20.0.3"
+
