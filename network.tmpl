@@ -58,6 +58,7 @@ config device
 
 config device
     option name 'wan'
+    option ipv6 '1'
     # MAC is important because it's allowlisted by ISP.
     option macaddr '${wan_ethernet_mac_address}'
 
