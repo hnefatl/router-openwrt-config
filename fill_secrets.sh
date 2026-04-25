@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 readarray -t gen_files < <(ls *.tmpl | sed 's/\.tmpl$//')
 
