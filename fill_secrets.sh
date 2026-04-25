@@ -35,4 +35,5 @@ done
 
 # Kind of a hack to do here, but needs to live somewhere.
 ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+ln -sf /etc/config/adguardhome.yaml /etc/adguardhome/adguardhome.yaml
 
