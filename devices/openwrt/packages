@@ -1,0 +1,15 @@
+bash
+vim
+curl
+diffutils
+
+python3-light
+python3-urllib
+
+luci-proto-wireguard
+qrencode
+
+luci-mod-rpc
+
+adguardhome
+

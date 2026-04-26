@@ -13,42 +13,25 @@
       profiles = openwrt-imagebuilder.lib.profiles { inherit pkgs; };
     in
     {
-      packages.x86_64-linux.router = openwrt-imagebuilder.lib.build (
-        profiles.identifyProfile "mikrotik_routerboard-760igs"
-        // {
-          packages = [
+      packages.x86_64-linux.router =
+        let
+          rom_packages = [
             # Needed for extroot below
             "block-mount"
             "e2fsprogs"
+            # sd card
+            "kmod-sdhci-mt7620"
             "kmod-fs-ext4"
+            # USB stick
             "kmod-fs-f2fs"
             "kmod-usb-storage"
-            "kmod-sdhci-mt7620"
             "kmod-usb-core"
             "kmod-usb-storage"
 
-            # Needed for sshfs/scp
+            # Needed for sshfs/scp during recovery
             "openssh-sftp-server"
 
-            # Needed for running sync.py
-            "python3-light"
-            "python3-urllib"
-
-            # Other misc packages
-            "vim"
-            "bash"
-            "diffutils"
-            "curl"
-
-            # AGH
-            "adguardhome"
-            # Wireguard
-            "luci-proto-wireguard"
-            "qrencode"
-            # Home Assistant integration
-            "luci-mod-rpc"
-
-            # From the package list at
+            # Core packages from the package list at
             # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
             "apk-mbedtls"
             "base-files"
@@ -86,40 +69,45 @@
             "luci"
             "luci-app-attendedsysupgrade"
           ];
+        in
+        openwrt-imagebuilder.lib.build (
+          profiles.identifyProfile "mikrotik_routerboard-760igs"
+          // {
+            packages = rom_packages;
 
-          # Configure extroot on the ROM
-          files = pkgs.runCommand "image-files" { } ''
-            mkdir -p $out/etc/config
-            cat > $out/etc/config/fstab <<EOF
-            config global
-                option anon_swap '0'
-                option anon_mount '0'
-                option auto_swap '1'
-                option auto_mount '1'
-                option delay_root '5'
-                option check_fs '0'
+            # Configure extroot on the ROM via fstab.
+            files = pkgs.runCommand "image-files" { } ''
+              mkdir -p $out/etc/config
+              cat > $out/etc/config/fstab <<EOF
+              config global
+                  option anon_swap '0'
+                  option anon_mount '0'
+                  option auto_swap '1'
+                  option auto_mount '1'
+                  option delay_root '5'
+                  option check_fs '0'
 
-            # Mount external USB with data required for persistence between installs.
-            config mount
-                option target '/external_usb'
-                option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
-                option enabled '1'
-                option options 'ro,noexec'
+              # Mount external USB with data required for persistence between installs.
+              config mount
+                  option target '/external_usb'
+                  option uuid '896a893d-048f-43cb-8e74-4ca787c0528d'
+                  option enabled '1'
+                  option options 'ro,noexec'
 
-            # Mount the original overlay device so we can access it if necessary
-            config mount
-                option target '/rootfs_data_original'
-                option device 'mtdblock9'
-                option enabled '1'
+              # Mount the original overlay device so we can access it if necessary
+              config mount
+                  option target '/rootfs_data_original'
+                  option device 'mtdblock9'
+                  option enabled '1'
 
-            # Mount over the overlay with the external SD card.
-            config mount
-                option target '/overlay'
-                option uuid '4a3ae55a-84fe-4cca-a1a3-7762fdcc13b9'
-                option enabled '1'
-            EOF
-          '';
-        }
-      );
+              # Mount over the overlay with the external SD card.
+              config mount
+                  option target '/overlay'
+                  option uuid '4a3ae55a-84fe-4cca-a1a3-7762fdcc13b9'
+                  option enabled '1'
+              EOF
+            '';
+          }
+        );
     };
 }
