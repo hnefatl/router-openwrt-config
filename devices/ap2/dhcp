@@ -25,7 +25,7 @@ config dhcp 'lan'
 	option limit '150'
 	option leasetime '12h'
 	option dhcpv4 'disabled'
-	option ra 'relay'
+	option ra 'disabled'
 	option ignore '1'
 
 config dhcp 'wan'
