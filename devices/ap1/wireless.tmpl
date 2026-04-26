@@ -1,0 +1,16 @@
+
+config wifi-device 'radio0'
+	option type 'mac80211'
+	option hwmode '11g'
+	option path 'platform/qca953x_wmac'
+	option htmode 'HT20'
+	option country 'GB'
+	option channel 'auto'
+
+config wifi-iface 'wifinet1'
+	option ssid 'MAC'
+	option encryption 'psk2'
+	option device 'radio0'
+	option mode 'ap'
+	option network 'lan'
+	option key '${wifi_mac_password}'
