@@ -32,7 +32,7 @@ def get_special_symlinks(
 def load_secrets(hostname: str) -> dict[str, str]:
     file = pathlib.Path(
         {
-            "openwrt": "/external_usb/secrets.toml",
+            "router": "/external_usb/secrets.toml",
         }.get(hostname, "/etc/config/secrets.toml")
     )
     return tomllib.loads(file.read_text())
