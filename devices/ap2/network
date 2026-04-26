@@ -10,12 +10,11 @@ config globals 'globals'
 config device
 	option name 'br-lan'
 	option type 'bridge'
-	list ports 'eth0'
-	list ports 'eth1'
-
-config device
-	option name 'eth0'
-	option macaddr 'dc:2c:6e:3b:12:97'
+	list ports 'wan'
+	list ports 'lan1'
+	list ports 'lan2'
+	list ports 'lan3'
+	list ports 'lan4'
 
 config interface 'lan'
 	option device 'br-lan'
@@ -24,40 +23,4 @@ config interface 'lan'
 	option ipaddr '10.20.0.3/16'
 	option gateway '10.20.0.1'
 	list dns '10.20.0.1'
-
-config device
-	option name 'eth1'
-	option macaddr 'dc:2c:6e:3b:12:96'
-
-config switch
-	option name 'switch0'
-	option reset '1'
-	option enable_vlan '1'
-
-config switch_vlan
-	option device 'switch0'
-	option vlan '1'
-	option ports '1 2 3 4 0'
-
-config device
-	option type 'bridge'
-	option name 'vlans'
-	list ports 'eth0'
-	list ports 'eth1'
-	list ports 'vlans.10'
-	list ports 'vlans.20'
-
-config bridge-vlan
-	option device 'vlans'
-	option vlan '10'
-	list ports 'eth0:t'
-	list ports 'eth1:t'
-	list ports 'vlans.10:t'
-
-config bridge-vlan
-	option device 'vlans'
-	option vlan '20'
-	list ports 'eth0:t'
-	list ports 'eth1:t'
-	list ports 'vlans.20:t'
 
