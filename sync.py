@@ -56,7 +56,7 @@ def main() -> Exit:
         print(f"Unknown host: {hostname}")
         return Exit.UNKNOWN_HOST
 
-    secrets = load_secrets(hostname)
+    secrets: dict[str, str] | None = None
     special_paths = get_special_symlinks(root_config_dir, hostname)
 
     source_files = set(host_config_dir.iterdir()).union(special_paths.keys())
@@ -77,6 +77,8 @@ def main() -> Exit:
         print(f"Processing {host_config} -> {dest_config}")
 
         if is_template:
+            if secrets is None:
+                secrets = load_secrets(hostname)
             template = string.Template(host_config.read_text())
             new_content = template.safe_substitute(secrets)
 
