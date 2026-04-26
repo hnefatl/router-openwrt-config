@@ -48,3 +48,28 @@ This can technically be done before the above to be faster, since the contents o
 #### Checks
 
 1. Reconfigure anything needing it: check that adguardhome is functioning, and that the wireguard interface looks healthy.
+
+## Hex S flash procedure
+
+Use the [23.05.0-rc3 initramfs](https://downloads.openwrt.org/releases/23.05.0-rc3/targets/ramips/mt7621/openwrt-23.05.0-rc3-ramips-mt7621-mikrotik_routerboard-760igs-initramfs-kernel.bin) to make sure it fits, then upgrade to a modern version using sysupgrade.
+
+1. Disable firewall: `sudo systemctl stop firewall`
+1. Plug ethernet into the WAN port on the router
+1. ```sh
+   INTERFACE=enp195s0f3u1
+   
+   $ sudo ip addr add 192.168.1.10/24 dev "$INTERFACE"
+   $ sudo dnsmasq -i "$INTERFACE" --no-daemon --port=0 --dhcp-range=192.168.1.11,192.168.1.20 --dhcp-boot=$(pwd)/openwrt-23.05.0-rc3-ramips-mt7621-mikrotik_routerboard-760igs-initramfs-kernel.bin --enable-tftp --tftp-root=$(pwd) --bootp-dynamic
+   ```
+1. Hold the reset button
+1. Power on router
+1. Keep holding as the SFP light comes on, flashes, goes solid, then turns off.
+1. When SFP turns off, release the reset button.
+1. Should get immediate activity from dnsmasq, like;
+   ```
+   dnsmasq-dhcp: BOOTP(enp195s0f3u1) 192.168.1.17 04:f4:1c:44:12:3e
+   ```
+1. Wait a few mins.
+1. Unplug from WAN, plug into a different port, go to http://192.168.1.1
+1. Flash sysupgrade image.
+1. Re-enable firewall: `sudo systemctl start firewall`
