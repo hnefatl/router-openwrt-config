@@ -33,7 +33,7 @@ def load_secrets(hostname: str) -> dict[str, str]:
     file = pathlib.Path(
         {
             "openwrt": "/external_usb/secrets.toml",
-        }.get(hostname, "/secrets/secrets.toml")
+        }.get(hostname, "/etc/config/secrets.toml")
     )
     return tomllib.loads(file.read_text())
 
