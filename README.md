@@ -1,6 +1,14 @@
 # README
 
-Configs for my network devices. `sync.py` handles symlinking or templating the configs to the right places.
+Configs for my network devices. Should be cloned into `/etc/config` on an openwrt device.
+
+## `sync.py`
+
+Handles populating device configs from copies/templates under [`devices/`](/devices). Allows for modifications via Luci/UCI which'll show up either in `git status` (if symlinked) or on the next run of the script, so that the changes can be manually synced back to the source configs.
+
+## Image Builder
+
+To simplify the extroot setup on `router`, there's a nix flake for building sysupgrade images with all the required packages and `fstab` preconfigured. This should be used instead of e.g. attended sysupgrade, otherwise the on-device flash will be used by default instead of the attached SD card.
 
 ## Fresh Installs
 
@@ -28,35 +36,6 @@ If the config is wiped (e.g. due to a firmware bump that requires deleting setti
    $ vim -d /tmp/config/network ~/mnt/network
    ```
 
-#### Extroot
-
-To make space for adguardhome and other apps, I'm using [extroot](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration) to mount an external SD card as the mutable root overlay filesystem after initial boot, instead of using on-device storage.
-
-With this setup, the device initially boots off the internal flash root partition, then pivots to use the configured extroot: so the files on the internal partition (`/rom`) need to be sufficient to mount the extroot: have `/rom/etc/config/fstab` present and required packages to mount the device.
-
-Generally, follow the steps [on this wiki page](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration#partitioning_and_formatting).
-
-1. Install necessary packages:
-
-   ```
-   $ apk add block-mount kmod-fs-ext4 e2fsprogs parted kmod-usb-storage kmod-sdhci-mt7620 lsblk kmod-usb-core kmod-usb-storage kmod-fs-vfat kmod-fs-f2fs
-   ```
-
-   Copy the contents of [`fstab`](/fstab) to the device, then verify the UUIDs are accurate (`lsblk -o name,size,uuid`). `block mount` will try to mount the partitions, to preview any errors.
-
-1. Manually mount the SD card on e.g. `/mnt`. Take a backup, then wipe the contents, and copy the current overlay FS contents to the new one:
-
-   ```sh
-   $ mount /dev/mmcblk0p1 /mnt
-   # From laptop:
-   $ scp -r root@192.168.1.1/mnt /tmp/old_overlay
-   # Back on router:
-   $ rm -rf /mnt/* /mnt/.*
-   $ tar -C /overlay -cvf - . | tar -C /mnt -xf -
-   ```
-
-1. Reboot the router. It should come back up with the filesystems mounted correctly.
-
 #### Config merging
 
 It's important to include new defaults from the new version: omitting `compat_version` in a previous update led to me needing to wipe the device more often than necessary.
@@ -66,7 +45,6 @@ This can technically be done before the above to be faster, since the contents o
 1. Mount the router's configs using sshfs again.
 1. Diff the default configs there against the git/original router's configs, and migrate changes over piece by piece. Pay special attention to template files.
 
-#### Reinstall missing packages
+#### Checks
 
-1. Reinstall any useful packages from [packages](/packages).
 1. Reconfigure anything needing it: check that adguardhome is functioning, and that the wireguard interface looks healthy.
