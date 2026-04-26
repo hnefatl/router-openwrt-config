@@ -42,12 +42,13 @@ def parse_args():
     parser = argparse.ArgumentParser(prog="sync")
     parser.add_argument("--config_dir", default="/etc/config")
     parser.add_argument("--secrets_file", default="")
+    parser.add_argument("--hostname", default="")
     return parser.parse_args()
 
 
 def main() -> Exit:
     args = parse_args()
-    hostname = socket.gethostname()
+    hostname = args.hostname or socket.gethostname()
 
     root_config_dir = pathlib.Path(args.config_dir)
     host_config_dir = root_config_dir / f"devices/{hostname}"
