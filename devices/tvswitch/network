@@ -1,0 +1,26 @@
+
+config interface 'loopback'
+    option device 'lo'
+    option proto 'static'
+    option ipaddr '127.0.0.1/8'
+
+config globals 'globals'
+    option packet_steering '1'
+
+config device
+    option name 'br-lan'
+    option type 'bridge'
+    list ports 'wan'
+    list ports 'lan2'
+    list ports 'lan3'
+    list ports 'lan4'
+    list ports 'lan5'
+    option ipv6 '1'
+
+config interface 'lan'
+    option device 'br-lan'
+    option proto 'static'
+	list ipaddr '10.20.0.4/16'
+	option gateway '10.20.0.1'
+	list dns '10.20.0.1'
+	option multipath 'off'
