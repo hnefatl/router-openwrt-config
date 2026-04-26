@@ -20,7 +20,7 @@ config uhttpd 'main'
 	option ubus_prefix '/ubus'
 
 config cert 'defaults'
-	option days '730'
+	option days '397'
 	option key_type 'ec'
 	option bits '2048'
 	option ec_curve 'P-256'

@@ -18,6 +18,8 @@
 
 # These aren't filled out by `sync.py`, but also aren't tracked by git because they're not interesting.
 /rpcd
+/ubootenv
+/ucitrack
 
 # Temporary editor files
 **/*~

@@ -1,1 +1,4 @@
 openssh-sftp-server
+
+python3-light
+python3-urllib
