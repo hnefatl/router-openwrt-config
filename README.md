@@ -30,11 +30,13 @@ If the config is wiped (e.g. due to a firmware bump that requires deleting setti
 
 #### Extroot
 
+To make space for adguardhome and other apps, I'm using [extroot](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration) to mount an external SD card as the mutable root overlay filesystem after initial boot, instead of using on-device storage.
+
+With this setup, the device initially boots off the internal flash root partition, then pivots to use the configured extroot: so the files on the internal partition (`/rom`) need to be sufficient to mount the extroot: have `/rom/etc/config/fstab` present and required packages to mount the device.
+
 Generally, follow the steps [on this wiki page](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration#partitioning_and_formatting).
 
-1. To make space for adguardhome and other apps, I'm using [extroot](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration). This mounts an external SD card as the mutable root overlay filesystem, instead of the on-device storage. Ideally this should be done first, to minimise how much stuff needs copying over to the card.
-
-   Install necessary packages:
+1. Install necessary packages:
 
    ```
    $ apk add block-mount kmod-fs-ext4 e2fsprogs parted kmod-usb-storage kmod-sdhci-mt7620 lsblk kmod-usb-core kmod-usb-storage kmod-fs-vfat kmod-fs-f2fs
