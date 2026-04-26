@@ -13,67 +13,64 @@
       profiles = openwrt-imagebuilder.lib.profiles { inherit pkgs; };
     in
     {
-      packages.x86_64-linux.router =
-        let
-          rom_packages = [
-            # Needed for extroot below
-            "block-mount"
-            "e2fsprogs"
-            # sd card
-            "kmod-sdhci-mt7620"
-            "kmod-fs-ext4"
-            # USB stick
-            "kmod-fs-f2fs"
-            "kmod-usb-storage"
-            "kmod-usb-core"
-            "kmod-usb-storage"
-
-            # Needed for sshfs/scp during recovery
-            "openssh-sftp-server"
-
-            # Core packages from the package list at
-            # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
-            "apk-mbedtls"
-            "base-files"
-            "ca-bundle"
-            "dnsmasq"
-            "dropbear"
-            "firewall4"
-            "fstools"
-            "kmod-crypto-hw-eip93"
-            "kmod-gpio-button-hotplug"
-            "kmod-leds-gpio"
-            "kmod-nft-offload"
-            "libc"
-            "libgcc"
-            "libustream-mbedtls"
-            "logd"
-            "mtd"
-            "netifd"
-            "nftables"
-            "odhcp6c"
-            "odhcpd-ipv6only"
-            "ppp"
-            "ppp-mod-pppoe"
-            "procd-ujail"
-            "uboot-envtools"
-            "uci"
-            "uclient-fetch"
-            "urandom-seed"
-            "urngd"
-            "wpad-basic-mbedtls"
-            "kmod-usb3"
-            "-uboot-envtools"
-            "kmod-sfp"
-            "-wpad-basic-mbedtls"
-            "luci"
-            "luci-app-attendedsysupgrade"
-          ];
-        in
-        openwrt-imagebuilder.lib.build (
+      packages.x86_64-linux = {
+        router = openwrt-imagebuilder.lib.build (
           profiles.identifyProfile "mikrotik_routerboard-760igs"
           // {
-            packages = rom_packages;
+            packages = [
+              # Needed for extroot below
+              "block-mount"
+              "e2fsprogs"
+              # sd card
+              "kmod-sdhci-mt7620"
+              "kmod-fs-ext4"
+              # USB stick
+              "kmod-fs-f2fs"
+              "kmod-usb-storage"
+              "kmod-usb-core"
+              "kmod-usb-storage"
+
+              # Needed for sshfs/scp during recovery
+              "openssh-sftp-server"
+
+              # Core packages from the package list at
+              # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
+              "apk-mbedtls"
+              "base-files"
+              "ca-bundle"
+              "dnsmasq"
+              "dropbear"
+              "firewall4"
+              "fstools"
+              "kmod-crypto-hw-eip93"
+              "kmod-gpio-button-hotplug"
+              "kmod-leds-gpio"
+              "kmod-nft-offload"
+              "libc"
+              "libgcc"
+              "libustream-mbedtls"
+              "logd"
+              "mtd"
+              "netifd"
+              "nftables"
+              "odhcp6c"
+              "odhcpd-ipv6only"
+              "ppp"
+              "ppp-mod-pppoe"
+              "procd-ujail"
+              "uboot-envtools"
+              "uci"
+              "uclient-fetch"
+              "urandom-seed"
+              "urngd"
+              "wpad-basic-mbedtls"
+              "kmod-usb3"
+              "-uboot-envtools"
+              "kmod-sfp"
+              "-wpad-basic-mbedtls"
+              "luci"
+              "luci-app-attendedsysupgrade"
+            ];
 
             # Configure extroot on the ROM via fstab.
             files = pkgs.runCommand "image-files" { } ''
@@ -109,5 +106,6 @@
             '';
           }
         );
+      };
     };
 }
