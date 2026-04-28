@@ -7,12 +7,13 @@ config defaults
     option flow_offloading '1'
     option flow_offloading_hw '1'
 
-config zone 'lan'
-    option name 'lan'
+config zone 'trusted'
+    option name 'trusted'
     option input 'ACCEPT'
     option output 'ACCEPT'
     option forward 'ACCEPT'
-    list network 'lan'
+    list network 'core'
+    list network 'trusted'
     list network 'wg0'
 
 config zone 'wan'
@@ -26,16 +27,12 @@ config zone 'wan'
     list network 'wan6'
 
 config forwarding
-    option src 'lan'
+    option src 'trusted'
     option dest 'wan'
 
 config include
     option path '/etc/firewall.user'
 
-# OpenWRT-default rules:
-# BEGIN
-
-# https://dev.openwrt.org/ticket/4108
 config rule
     option name 'Allow-DHCP-Renew'
     option src 'wan'
@@ -43,6 +40,7 @@ config rule
     option dest_port '68'
     option target 'ACCEPT'
     option family 'ipv4'
+
 config rule
     option name 'Allow-Ping'
     option src 'wan'
@@ -58,7 +56,6 @@ config rule
     option family 'ipv4'
     option target 'ACCEPT'
 
-# https://github.com/openwrt/openwrt/issues/5066
 config rule
     option name 'Allow-DHCPv6'
     option src 'wan'
@@ -79,7 +76,6 @@ config rule
     option family 'ipv6'
     option target 'ACCEPT'
 
-# Allow essential incoming IPv6 ICMP traffic
 config rule
     option name 'Allow-ICMPv6-Input'
     option src 'wan'
@@ -99,7 +95,6 @@ config rule
     option family 'ipv6'
     option target 'ACCEPT'
 
-# Allow essential forwarded IPv6 ICMP traffic
 config rule
     option name 'Allow-ICMPv6-Forward'
     option src 'wan'
@@ -119,26 +114,22 @@ config rule
 config rule
     option name 'Allow-IPSec-ESP'
     option src 'wan'
-    option dest 'lan'
+    option dest 'trusted'
     option proto 'esp'
     option target 'ACCEPT'
 
 config rule
     option name 'Allow-ISAKMP'
     option src 'wan'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '500'
     option proto 'udp'
     option target 'ACCEPT'
 
-# END
-
-# Begin user-configured settings:
-
 config rule
     option name 'Server-HTTP'
     option src 'wan'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '80'
     option target 'ACCEPT'
     option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
@@ -146,7 +137,7 @@ config rule
 config rule
     option name 'Server-HTTPS'
     option src 'wan'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '443'
     option target 'ACCEPT'
     option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
@@ -156,7 +147,7 @@ config redirect
     option name 'http'
     option src 'wan'
     option src_dport '80'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '80'
     option dest_ip '10.20.1.3'
 
@@ -165,7 +156,7 @@ config redirect
     option name 'https'
     option src 'wan'
     option src_dport '443'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '443'
     option dest_ip '10.20.1.3'
 
@@ -174,7 +165,7 @@ config redirect
     option name 'vintagestory'
     option src 'wan'
     option src_dport '42420'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '42420'
     option dest_ip '10.20.1.3'
 
@@ -190,7 +181,7 @@ config redirect
     option name 'plex'
     option src 'wan'
     option src_dport '32400'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_ip '10.20.1.3'
     option dest_port '32400'
 
@@ -199,13 +190,13 @@ config redirect
     option name 'external dns'
     option src 'wan'
     option src_dport '53'
-    option dest 'lan'
+    option dest 'trusted'
     option dest_port '1273'
     option dest_ip '10.20.1.3'
 
 config rule
     option name 'Block-TV-Internet'
-    option src 'lan'
+    option src 'trusted'
     option dest 'wan'
     option target 'REJECT'
     list src_ip '10.20.2.6'
