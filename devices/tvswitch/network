@@ -10,17 +10,39 @@ config globals 'globals'
 config device
     option name 'br-lan'
     option type 'bridge'
-    list ports 'wan'
+    option ipv6 '1'
     list ports 'lan2'
     list ports 'lan3'
     list ports 'lan4'
     list ports 'lan5'
-    option ipv6 '1'
+    list ports 'wan'
 
 config interface 'lan'
-    option device 'br-lan'
+    option device 'br-lan.1'
     option proto 'static'
-	list ipaddr '10.20.0.4/16'
-	option gateway '10.20.0.1'
-	list dns '10.20.0.1'
-	option multipath 'off'
+    list ipaddr '10.20.0.4/16'
+    option gateway '10.20.0.1'
+    list dns '10.20.0.1'
+    option multipath 'off'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '1'
+    list ports 'lan2:u*'
+    list ports 'lan3:t'
+    list ports 'lan4:u*'
+    list ports 'lan5:u*'
+    list ports 'wan:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '10'
+    list ports 'lan4:t'
+    list ports 'wan:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '20'
+    list ports 'lan4:t'
+    list ports 'wan:t'
+

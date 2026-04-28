@@ -1,0 +1,160 @@
+
+config interface 'loopback'
+    option device 'lo'
+    option proto 'static'
+    option ipaddr '127.0.0.1/8'
+
+config globals 'globals'
+    option packet_steering '1'
+    option ula_prefix 'fdf3:685c:acae::/48'
+
+config device
+    option name 'br-lan'
+    option type 'bridge'
+    list ports 'lan2'
+    list ports 'lan3'
+    list ports 'lan4'
+    list ports 'lan5'
+    option ipv6 '1'
+
+config interface 'core'
+    option device 'br-lan.1'
+    option proto 'static'
+    option ipaddr '10.20.0.1/16'
+    # Setting DNS here enforces captive DNS, but also means if the server
+    # is down there's no DNS resolution. For now, I'll take availability.
+    #list dns '10.20.1.3'
+    # Set the subnet for this interface: with a prefix of 2a01:4b00:bd20:7000::/56,
+    # this gives a subnet of 2a01:4b00:bd20:7001::/60, so SLAAC can allocate
+    # /64 addresses within the net.
+    # TODO: use a vlan for each subnet, so can split different device categories
+    # into different subnets (and do firewalling etc).
+    option ip6hint '01'
+    option ip6assign '64'
+    # Only assign local ipv6 addresses.
+    #list ip6class 'local'
+
+config interface 'trusted'
+	option proto 'static'
+	option device 'br-lan.10'
+	option ipaddr '10.20.10.1'
+	option netmask '255.255.255.0'
+	option multipath 'off'
+	option ip6hint '10'
+
+config interface 'untrusted'
+	option proto 'static'
+	option device 'br-lan.20'
+	option ipaddr '10.20.20.1'
+	option netmask '255.255.255.0'
+	option multipath 'off'
+	option ip6hint '20'
+
+config interface 'untrusted_ofln'
+	option proto 'static'
+	option device 'br-lan.21'
+	option ipaddr '10.20.21.1'
+	option netmask '255.255.255.0'
+	option multipath 'off'
+	option ip6hint '21'
+
+config device
+    option name 'br-wan'
+    option type 'bridge'
+    list ports 'sfp'
+    list ports 'wan'
+
+config device
+    option name 'wan'
+    option ipv6 '1'
+    # MAC is important because it's allowlisted by ISP.
+    option macaddr 'e8:f8:d0:a2:b4:98'
+
+config interface 'wan'
+    option device 'br-wan'
+    option proto 'dhcp'
+    # Setting DNS here enforces captive DNS, but also means if the server
+    # is down there's no DNS resolution. For now, I'll take availability.
+    #option peerdns '0'
+    #list dns '10.20.1.3'
+
+config interface 'wan6'
+    option device 'br-wan'
+    option proto 'dhcpv6'
+    #option peerdns '0'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '1'
+    list ports 'lan2:t'
+    list ports 'lan3:u*'
+    list ports 'lan4:u*'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '10'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '20'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '21'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '30'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config interface 'wg0'
+    option proto 'wireguard'
+    option private_key 'qITpSyXDegJoraMj6qYpY15kEAZfnVU95qsHn2/Rq3I='
+    option listen_port '5746'
+    list allowed_ips '10.29.0.0/24'
+    list addresses '10.29.0.1/24'
+
+config wireguard_wg0 'corp_laptop'
+    option description 'Corp Laptop'
+    option public_key 'LVG44MV3tvMfzG+Kxo9H8Eaiy/v7ilOFy21yLk/N9xI='
+    list allowed_ips '10.29.0.2/32'
+    option route_allowed_ips '1'
+
+config wireguard_wg0 'personal_phone'
+    option description 'Personal Phone'
+    option public_key 'Ge4l3AhsI7CZwT3jrd6dJXoSrOUjTEUbF17yTmcDx0g='
+    list allowed_ips '10.29.0.3/32'
+    option route_allowed_ips '1'
+
+config wireguard_wg0 'corp_phone'
+    option description 'Corp Phone'
+    option public_key 'ekgAeNSLMU0SKAIwB+3YFCzcPWXOCQ0PeCvUFt9fAhU='
+    list allowed_ips '10.29.0.5/32'
+    option route_allowed_ips '1'
+
+config wireguard_wg0 'parents_house'
+    option description "Parent's House"
+    option public_key 'CPv9bki8kSEZLkVVqmuD7Noar4IOfv5Nl6ZsS6mz4mg='
+    list allowed_ips '10.29.0.7/32'
+    option route_allowed_ips '1'
+
+config wireguard_wg0 'parents_display_pi'
+    option description "Parent's Display Pi"
+    option public_key 'VK+LA6HeZMncR6yaOUuIT0qn0BYL/X3dBJ1DVcCBd1A='
+    list allowed_ips '10.29.0.8/32'
+    option route_allowed_ips '1'
+
+config wireguard_wg0 'personal_laptop'
+    option description "Personal Laptop"
+    option public_key 'Mb5+sk9FnFbdaz9zrHddatzaBO3bMoIqQRflJtSMN2U='
+    list allowed_ips '10.29.0.9/32'
+    option route_allowed_ips '1'
+
