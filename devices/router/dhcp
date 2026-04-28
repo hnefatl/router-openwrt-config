@@ -54,8 +54,8 @@ config dnsmasq
     list address '/pikvm.warthog.keith.collister.xyz/10.20.1.5'
     list address '/servercpu.warthog.keith.collister.xyz/10.20.1.6'
 
-config dhcp 'lan'
-    option interface 'lan'
+config dhcp 'core'
+    option interface 'core'
     option start '770'
     option limit '253'
     # Some hosts have lower lease times (to detect DHCP misconfigurations

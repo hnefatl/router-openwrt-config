@@ -1,9 +1,9 @@
 config adguardhome 'config'
-	# All paths must be readable by the configured user
-	option config_file '/etc/adguardhome/adguardhome.yaml'
-	# Where to store persistent data by AdGuard Home
-	option work_dir '/var/lib/adguardhome'
-	option user 'adguardhome'
-	option group 'adguardhome'
-	option verbose '0'
+    # All paths must be readable by the configured user
+    option config_file '/etc/adguardhome/adguardhome.yaml'
+    # Where to store persistent data by AdGuard Home
+    option work_dir '/var/lib/adguardhome'
+    option user 'adguardhome'
+    option group 'adguardhome'
+    option verbose '0'
 

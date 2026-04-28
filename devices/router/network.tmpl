@@ -17,7 +17,7 @@ config device
     list ports 'lan5'
     option ipv6 '1'
 
-config interface 'lan'
+config interface 'core'
     option device 'br-lan.1'
     option proto 'static'
     option ipaddr '10.20.0.1/16'
@@ -33,6 +33,33 @@ config interface 'lan'
     option ip6assign '64'
     # Only assign local ipv6 addresses.
     #list ip6class 'local'
+
+config interface 'trusted'
+    option proto 'static'
+    option device 'br-lan.10'
+    option ipaddr '10.20.10.1'
+    option netmask '255.255.255.0'
+    option multipath 'off'
+    option ip6assign '64'
+    option ip6hint '10'
+
+config interface 'untrusted'
+    option proto 'static'
+    option device 'br-lan.20'
+    option ipaddr '10.20.20.1'
+    option netmask '255.255.255.0'
+    option multipath 'off'
+    option ip6assign '64'
+    option ip6hint '20'
+
+config interface 'untrusted_ofln'
+    option proto 'static'
+    option device 'br-lan.21'
+    option ipaddr '10.20.21.1'
+    option netmask '255.255.255.0'
+    option multipath 'off'
+    option ip6assign '64'
+    option ip6hint '21'
 
 config device
     option name 'br-wan'
