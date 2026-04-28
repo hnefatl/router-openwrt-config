@@ -18,7 +18,7 @@ config device
     option ipv6 '1'
 
 config interface 'lan'
-    option device 'br-lan'
+    option device 'br-lan.1'
     option proto 'static'
     option ipaddr '10.20.0.1/16'
     # Setting DNS here enforces captive DNS, but also means if the server
@@ -59,11 +59,37 @@ config interface 'wan6'
     option proto 'dhcpv6'
     #option peerdns '0'
 
-# For docker containers
-#config route
-#        option target '10.21.0.0/16'
-#        option gateway '10.20.1.3'
-#    option interface 'lan'
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '1'
+    list ports 'lan2:t'
+    list ports 'lan3:u*'
+    list ports 'lan4:u*'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '10'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '20'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '21'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
+
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '30'
+    list ports 'lan2:t'
+    list ports 'lan5:t'
 
 config interface 'wg0'
     option proto 'wireguard'
@@ -108,14 +134,3 @@ config wireguard_wg0 'personal_laptop'
     list allowed_ips '10.29.0.9/32'
     option route_allowed_ips '1'
 
-# Attempts at getting docker containers to be routable
-#config route
-#    option interface 'lan'
-#    option target '10.20.4.0/24'
-#    option netmask '255.255.255.0'
-#    option gateway '10.20.1.3'
-#
-#config route6
-#    option interface 'lan'
-#    option target 'fdf3:685c:acae:d0ca::/64'
-#    option gateway 'fdf3:685c:acae::2a2'
