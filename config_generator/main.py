@@ -9,6 +9,8 @@ import string
 import sys
 import tomllib
 
+import diff
+
 
 class Exit(enum.IntEnum):
     SUCCESS = 0
@@ -90,7 +92,7 @@ def main() -> Exit:
                 current_content = dest_config.read_text()
                 if current_content != new_content:
                     print("Config already exists")
-                    print_diff(new_content, current_content)
+                    diff.print_diff(new_content, current_content)
                     print("Overwrite (y/n)? ", end="", flush=True)
                     if input().lower() != "y":
                         return Exit.CONFIG_DIFF
@@ -102,7 +104,7 @@ def main() -> Exit:
                 if dest_config.is_symlink() and dest_config.readlink() == host_config:
                     continue
                 print("Config already exists, not symlinking")
-                print_diff_paths(host_config, dest_config)
+                diff.print_diff_paths(host_config, dest_config)
                 return Exit.EXISTING_CONFIG
             elif dest_config.exists():
                 print("Expected symlink, found normal file: might be misconfigured")
@@ -111,20 +113,6 @@ def main() -> Exit:
             dest_config.symlink_to(host_config)
 
     return Exit.SUCCESS
-
-
-def print_diff_paths(a: pathlib.Path, b: pathlib.Path):
-    print_diff(a.read_text(), b.read_text())
-
-
-def print_diff(a: str, b: str):
-    a_lines = a.splitlines(keepends=True)
-    b_lines = b.splitlines(keepends=True)
-    if a_lines == b_lines:
-        print("Files are identical.")
-    else:
-        diff = difflib.context_diff(a_lines, b_lines)
-        print("".join(diff), end="")
 
 
 def symlink_if_not_already(src: pathlib.Path, dst: pathlib.Path) -> bool:
