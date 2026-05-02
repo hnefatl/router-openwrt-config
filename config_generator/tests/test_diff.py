@@ -1,6 +1,7 @@
-import diff
 import textwrap
 import unittest
+
+from diff import *
 
 
 class TestDiff(unittest.TestCase):
@@ -28,4 +29,7 @@ class TestDiff(unittest.TestCase):
              bar baz
             +bop"""
         )
-        self.assertEqual(diff.get_diff(a, b, colourise=False), expected)
+        self.assertEqual(get_diff(a, b, colourise=False), expected)
+
+    def test_print_diff_tabs(self):
+        self.assertEqual(get_diff("\t", "    "), "Files are identical.")

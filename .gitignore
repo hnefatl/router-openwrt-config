@@ -1,27 +1,8 @@
-# Files in the top level are added by `sync.py`: they should be ignored because they're either symlinked or templated from other files.
-# But any new additions after e.g. an update, should show up in `git status`.
-/adguardhome
-/attendedsysupgrade
-/dhcp
-/dropbear
-/firewall
-/fstab
-/luci
-/network
-/packages
-/system
-/ubihealthd
-/uhttpd
-/wireless
-
-/secrets.toml
-
-# These aren't filled out by `sync.py`, but also aren't tracked by git because they're not interesting.
-/rpcd
-/ubootenv
-/ucitrack
+/secrets/
 
 # Temporary editor files
 **/*~
 **/*.swp
 **/__pycache__
+.direnv
+

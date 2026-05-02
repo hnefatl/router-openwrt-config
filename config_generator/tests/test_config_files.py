@@ -1,0 +1,71 @@
+import contextlib
+import pathlib
+import tempfile
+import textwrap
+import unittest
+
+from config_files import *
+
+
+def write(dir: pathlib.Path, filename: str, contents: str) -> pathlib.Path:
+    path = dir / filename
+    path.write_text(textwrap.dedent(contents))
+    return path
+
+
+class TestFiles(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        self.maxDiff = 10000
+
+    def test_temp_directory(self):
+        with temp_directory() as d:
+            self.assertTrue(d.exists())
+        self.assertFalse(d.exists())
+
+    def test_template(self):
+        with temp_directory() as sot_dir, temp_directory() as target_dir:
+            secrets = {"secret": "mysecret"}
+            template_sot_file = write(
+                sot_dir,
+                "template.tmpl",
+                'foo = "${secret}"',
+            )
+            template_expanded = 'foo = "mysecret"'
+            template_target_file = write(
+                target_dir,
+                "template",
+                template_expanded,
+            )
+
+            other_sot_file = write(sot_dir, "zzzother", "other")
+            other_target_file = write(target_dir, "zzzother", "other")
+
+            missing_in_target_file = write(sot_dir, "missing_in_target", "foo")
+            write(target_dir, "missing_in_sot", "foo")
+
+            files = files_from_dir(sot_dir, target_dir, secrets)
+
+            self.assertListEqual(
+                files,
+                [
+                    File(
+                        sot_path=missing_in_target_file,
+                        sot_expanded_contents="foo",
+                        target_path=target_dir / "missing_in_target",
+                        target_contents=None,
+                    ),
+                    File(
+                        sot_path=template_sot_file,
+                        sot_expanded_contents=template_expanded,
+                        target_path=template_target_file,
+                        target_contents=template_expanded,
+                    ),
+                    File(
+                        sot_path=other_sot_file,
+                        sot_expanded_contents="other",
+                        target_path=other_target_file,
+                        target_contents="other",
+                    ),
+                ],
+            )

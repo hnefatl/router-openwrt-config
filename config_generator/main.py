@@ -1,128 +1,125 @@
 #!/usr/bin/env python3
 
 import argparse
-import difflib
+import contextlib
+import dataclasses
 import enum
 import pathlib
-import socket
-import string
+import subprocess
 import sys
-import tomllib
 
+import config_secrets
 import diff
+from exit_codes import *
+import config_files
+import sshfs
 
 
-class Exit(enum.IntEnum):
-    SUCCESS = 0
-    UNKNOWN_HOST = 1
-    CONFIG_DIFF = 2
-    EXISTING_CONFIG = 3
-    WRONG_FILE_TYPE = 4
+@dataclasses.dataclass
+class Args:
+    target: str
+    fake_sshfs_dir: pathlib.Path | None
+    dry_run: bool
 
 
-def get_special_symlinks(
-    root_config_dir: pathlib.Path, hostname: str
-) -> dict[pathlib.Path, pathlib.Path]:
-    # Paths relative to the root config dir.
-    ps = {
-        "devices/authorized_keys": "/etc/dropbear/authorized_keys",
-        f"devices/{hostname}/adguardhome.yaml.tmpl": "/etc/adguardhome/adguardhome.yaml",
-    }
-    return {root_config_dir / k: pathlib.Path(v) for k, v in ps.items()}
-
-
-def load_secrets(hostname: str) -> dict[str, str]:
-    file = pathlib.Path(
-        {
-            "router": "/external_usb/secrets.toml",
-        }.get(hostname, "/etc/config/secrets.toml")
+def parse_args() -> Args:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--target", required=True, help="Hostname of the target device."
     )
-    return tomllib.loads(file.read_text())
+    parser.add_argument(
+        "--fake_sshfs_dir",
+        default="",
+        help="Don't use sshfs, output files to this directory instead.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        default=True,
+        action=argparse.BooleanOptionalAction,
+        help="Dry-run mode.",
+    )
+    args = parser.parse_args()
+    fake_sshfs_dir = None
+    if args.fake_sshfs_dir:
+        fake_sshfs_dir = pathlib.Path(args.fake_sshfs_dir)
+        if not fake_sshfs_dir.is_absolute():
+            raise RuntimeError("Absolute path required for fake sshfs dir.")
+        if not fake_sshfs_dir.exists():
+            raise RuntimeError("Fake sshfs dir must exist")
+
+    return Args(
+        target=args.target,
+        fake_sshfs_dir=fake_sshfs_dir,
+        dry_run=bool(args.dry_run),
+    )
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(prog="sync")
-    parser.add_argument("--config_dir", default="/etc/config")
-    parser.add_argument("--secrets_file", default="")
-    parser.add_argument("--hostname", default="")
-    return parser.parse_args()
+def prompt(prompt: str) -> str:
+    print(prompt, end="")
+    return input()
 
 
-def main() -> Exit:
+def main():
     args = parse_args()
-    hostname = args.hostname or socket.gethostname()
+    if args.dry_run:
+        print("Operating in dry-run mode.")
 
-    root_config_dir = pathlib.Path(args.config_dir)
-    host_config_dir = root_config_dir / f"devices/{hostname}"
-    if not host_config_dir.exists():
-        print(f"Unknown host: {hostname}")
-        return Exit.UNKNOWN_HOST
+    # file -> config_generator -> root of repo
+    root_config_dir = pathlib.Path(__file__).parent.parent
+    target_config_dir = root_config_dir / "devices" / args.target
+    if not target_config_dir.exists():
+        raise UnknownTargetError(f"Unknown target: {args.target}")
 
-    secrets: dict[str, str] | None = None
-    special_paths = get_special_symlinks(root_config_dir, hostname)
+    secrets_file = root_config_dir / "secrets" / f"{args.target}.toml"
+    secrets = config_secrets.load_secrets(secrets_file) if secrets_file.exists() else {}
 
-    source_files = set(host_config_dir.iterdir()).union(special_paths.keys())
-    for host_config in sorted(source_files):
-        if not host_config.is_file():
+    with contextlib.ExitStack() as stack:
+        if not args.fake_sshfs_dir:
+            d = stack.enter_context(config_files.temp_directory())
+            stack.enter_context(sshfs.mount(args.target, d))
+        else:
+            d = args.fake_sshfs_dir
+            print(f"Not using sshfs, output directory: {d}")
+
+        files = config_files.files_from_dir(target_config_dir, d, secrets)
+        process_files(args, files, secrets)
+
+
+def process_files(
+    args: Args, files: config_files.Files, secrets: config_secrets.Secrets
+):
+    for file in files:
+        if file.target_contents is None:
+            if args.dry_run:
+                print(f"[dry-run] Would create {file.target_path}")
+            else:
+                file.target_path.write_text(file.sot_expanded_contents)
             continue
 
-        dest_config = root_config_dir / host_config.name
-        if special_path := special_paths.get(host_config):
-            dest_config = special_path
-        assert host_config.is_absolute()
-        assert dest_config.is_absolute()
+        while file.sot_expanded_contents != file.target_contents:
+            print(f"Diff between {file.target_path} and {file.sot_path}:")
+            print(diff.get_diff(file.target_contents, file.sot_expanded_contents))
+            if args.dry_run:
+                print(f"[dry-run] Would edit {file.sot_path} and {file.target_path}")
+                break
 
-        is_template = host_config.suffix == ".tmpl"
-        if is_template and dest_config.suffix == ".tmpl":
-            dest_config = dest_config.with_suffix("")
-
-        print(f"Processing {host_config} -> {dest_config}")
-
-        if is_template:
-            if secrets is None:
-                secrets = load_secrets(hostname)
-            template = string.Template(host_config.read_text())
-            new_content = template.safe_substitute(secrets)
-
-            if dest_config.is_symlink():
-                print("Expected normal file, found symlink: might be misconfigured.")
-                return Exit.WRONG_FILE_TYPE
-
-            if dest_config.exists():
-                current_content = dest_config.read_text()
-                if current_content != new_content:
-                    print("Config already exists")
-                    diff.print_diff(new_content, current_content)
-                    print("Overwrite (y/n)? ", end="", flush=True)
-                    if input().lower() != "y":
-                        return Exit.CONFIG_DIFF
-
-            dest_config.write_text(new_content)
-        else:
-            if dest_config.exists(follow_symlinks=False):
-                # Might already be symlinked to the right file.
-                if dest_config.is_symlink() and dest_config.readlink() == host_config:
-                    continue
-                print("Config already exists, not symlinking")
-                diff.print_diff_paths(host_config, dest_config)
-                return Exit.EXISTING_CONFIG
-            elif dest_config.exists():
-                print("Expected symlink, found normal file: might be misconfigured")
-                return Exit.WRONG_FILE_TYPE
-
-            dest_config.symlink_to(host_config)
-
-    return Exit.SUCCESS
-
-
-def symlink_if_not_already(src: pathlib.Path, dst: pathlib.Path) -> bool:
-    """Returns false if the destination exists and isn't already symlinked."""
-    if src.exists():
-        # Might already be symlinked to the right file.
-        return src.is_symlink() and src.readlink() == dst
-    src.symlink_to(dst)
-    return True
+            c = prompt("Overwrite (l)ocal, overwrite (t)arget, (e)dit, or (s)kip: ")
+            if c in ("l", "t"):
+                if prompt("Are you sure (y/n)? ") == "y":
+                    if c == "l":
+                        file.sot_path.write_text(file.target_contents)
+                    else:
+                        file.target_path.write_text(file.sot_expanded_contents)
+            elif c == "s":
+                break
+            elif c == "e":
+                subprocess.check_call(["vim", "-d", file.sot_path, file.target_path])
+            file.reload_contents(secrets)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        main()
+    except ExitError as e:
+        print(e.message)
+        sys.exit(e.code)
