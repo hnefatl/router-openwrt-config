@@ -1,7 +1,7 @@
-import diff
 import textwrap
 import unittest
 
+import diff
 
 class TestDiff(unittest.TestCase):
     def test_print_diff(self):
