@@ -23,5 +23,6 @@
           sshfs
         ];
       };
+      packages.${system}.images = import ./images.nix { inherit pkgs openwrt-imagebuilder; };
     };
 }
