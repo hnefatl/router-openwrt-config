@@ -2,102 +2,116 @@
 let
   profiles = openwrt-imagebuilder.lib.profiles { inherit pkgs; };
 
-  hex_s_base = profiles.identifyProfile "mikrotik_routerboard-760igs" // {
+  base = {
     packages = [
-      # Needed for sshfs/scp during recovery
-      "openssh-sftp-server"
-
-      # Core packages from the package list at
-      # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
-      "apk-mbedtls"
-      "base-files"
-      "ca-bundle"
-      "dnsmasq"
-      "dropbear"
-      "firewall4"
-      "fstools"
-      "kmod-crypto-hw-eip93"
-      "kmod-gpio-button-hotplug"
-      "kmod-leds-gpio"
-      "kmod-nft-offload"
-      "libc"
-      "libgcc"
-      "libustream-mbedtls"
-      "logd"
-      "mtd"
-      "netifd"
-      "nftables"
-      "odhcp6c"
-      "odhcpd-ipv6only"
-      "ppp"
-      "ppp-mod-pppoe"
-      "procd-ujail"
-      "uboot-envtools"
-      "uci"
-      "uclient-fetch"
-      "urandom-seed"
-      "urngd"
-      "wpad-basic-mbedtls"
-      "kmod-usb3"
-      "-uboot-envtools"
-      "kmod-sfp"
-      "-wpad-basic-mbedtls"
-      "luci"
-      "luci-app-attendedsysupgrade"
+      "bash"
+      "vim"
+      "curl"
     ];
   };
-  hap_ac2_base = profiles.identifyProfile "mikrotik_hap-ac2" // {
-    packages = [
-      # Needed for sshfs/scp during recovery
-      "openssh-sftp-server"
-      # Needed for 802.11k/v band steering for better 5GHz usage
-      "usteer"
-      "luci-app-usteer"
 
-      # wpad-mbedtls instead of wpad-basic-mbedtls to support usteer
-      "wpad-mbedtls"
-      "-wpad-basic-mbedtls"
+  hex_s_base =
+    profiles.identifyProfile "mikrotik_routerboard-760igs"
+    // base
+    // {
+      packages = [
+        # Needed for sshfs/scp during recovery
+        "openssh-sftp-server"
 
-      # https://firmware-selector.openwrt.org/?version=25.12.2&target=ipq40xx%2Fmikrotik&id=mikrotik_hap-ac2
-      "apk-mbedtls"
-      "ath10k-firmware-qca4019-ct"
-      "base-files"
-      "ca-bundle"
-      "dnsmasq"
-      "dropbear"
-      "firewall4"
-      "fstools"
-      "kmod-ath10k-ct"
-      "kmod-gpio-button-hotplug"
-      "kmod-leds-gpio"
-      "kmod-nft-offload"
-      "kmod-usb-dwc3"
-      "kmod-usb-dwc3-qcom"
-      "kmod-usb3"
-      "libc"
-      "libgcc"
-      "libustream-mbedtls"
-      "logd"
-      "mtd"
-      "netifd"
-      "nftables"
-      "odhcp6c"
-      "odhcpd-ipv6only"
-      "ppp"
-      "ppp-mod-pppoe"
-      "procd-ujail"
-      "uboot-envtools"
-      "uci"
-      "uclient-fetch"
-      "urandom-seed"
-      "urngd"
-      "wpad-basic-mbedtls"
-      "-kmod-ath10k-ct"
-      "kmod-ath10k-ct-smallbuffers"
-      "luci"
-      "luci-app-attendedsysupgrade"
-    ];
-  };
+        # Core packages from the package list at
+        # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
+        "apk-mbedtls"
+        "base-files"
+        "ca-bundle"
+        "dnsmasq"
+        "dropbear"
+        "firewall4"
+        "fstools"
+        "kmod-crypto-hw-eip93"
+        "kmod-gpio-button-hotplug"
+        "kmod-leds-gpio"
+        "kmod-nft-offload"
+        "libc"
+        "libgcc"
+        "libustream-mbedtls"
+        "logd"
+        "mtd"
+        "netifd"
+        "nftables"
+        "odhcp6c"
+        "odhcpd-ipv6only"
+        "ppp"
+        "ppp-mod-pppoe"
+        "procd-ujail"
+        "uboot-envtools"
+        "uci"
+        "uclient-fetch"
+        "urandom-seed"
+        "urngd"
+        "wpad-basic-mbedtls"
+        "kmod-usb3"
+        "-uboot-envtools"
+        "kmod-sfp"
+        "-wpad-basic-mbedtls"
+        "luci"
+        "luci-app-attendedsysupgrade"
+      ];
+    };
+  hap_ac2_base =
+    profiles.identifyProfile "mikrotik_hap-ac2"
+    // base
+    // {
+      packages = [
+        # Needed for sshfs/scp during recovery
+        "openssh-sftp-server"
+        # Needed for 802.11k/v band steering for better 5GHz usage
+        "usteer"
+        "luci-app-usteer"
+
+        # wpad-mbedtls instead of wpad-basic-mbedtls to support usteer
+        "wpad-mbedtls"
+        "-wpad-basic-mbedtls"
+
+        # https://firmware-selector.openwrt.org/?version=25.12.2&target=ipq40xx%2Fmikrotik&id=mikrotik_hap-ac2
+        "apk-mbedtls"
+        "ath10k-firmware-qca4019-ct"
+        "base-files"
+        "ca-bundle"
+        "dnsmasq"
+        "dropbear"
+        "firewall4"
+        "fstools"
+        "kmod-ath10k-ct"
+        "kmod-gpio-button-hotplug"
+        "kmod-leds-gpio"
+        "kmod-nft-offload"
+        "kmod-usb-dwc3"
+        "kmod-usb-dwc3-qcom"
+        "kmod-usb3"
+        "libc"
+        "libgcc"
+        "libustream-mbedtls"
+        "logd"
+        "mtd"
+        "netifd"
+        "nftables"
+        "odhcp6c"
+        "odhcpd-ipv6only"
+        "ppp"
+        "ppp-mod-pppoe"
+        "procd-ujail"
+        "uboot-envtools"
+        "uci"
+        "uclient-fetch"
+        "urandom-seed"
+        "urngd"
+        "wpad-basic-mbedtls"
+        "-kmod-ath10k-ct"
+        "kmod-ath10k-ct-smallbuffers"
+        "luci"
+        "luci-app-attendedsysupgrade"
+      ];
+    };
 in
 {
   router = openwrt-imagebuilder.lib.build (
