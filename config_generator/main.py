@@ -18,6 +18,7 @@ import sshfs
 @dataclasses.dataclass
 class Args:
     target: str
+    target_connection_str: str
     fake_sshfs_dir: pathlib.Path | None
     dry_run: bool
 
@@ -26,6 +27,11 @@ def parse_args() -> Args:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--target", required=True, help="Hostname of the target device."
+    )
+    parser.add_argument(
+        "--target-connection-str",
+        default="",
+        help="user@ip string for use in sshfs.",
     )
     parser.add_argument(
         "--fake_sshfs_dir",
@@ -49,6 +55,11 @@ def parse_args() -> Args:
 
     return Args(
         target=args.target,
+        target_connection_str=(
+            args.target_connection_str
+            if args.target_connection_str
+            else f"root@{args.target}.lan"
+        ),
         fake_sshfs_dir=fake_sshfs_dir,
         dry_run=bool(args.dry_run),
     )
@@ -76,7 +87,7 @@ def main():
     with contextlib.ExitStack() as stack:
         if not args.fake_sshfs_dir:
             d = stack.enter_context(temp_directory())
-            stack.enter_context(sshfs.mount(args.target, d))
+            stack.enter_context(sshfs.mount(args.target_connection_str, d))
         else:
             d = args.fake_sshfs_dir
             print(f"Not using sshfs, output directory: {d}")

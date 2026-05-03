@@ -6,7 +6,7 @@ import sys
 
 
 @contextlib.contextmanager
-def mount(hostname: str, dir: pathlib.Path):
+def mount(target_connection_str: str, dir: pathlib.Path):
     """Context manager to mount/unmount sshfs"""
     try:
         r = subprocess.check_call(
@@ -16,9 +16,7 @@ def mount(hostname: str, dir: pathlib.Path):
                 f"uid={os.getuid()}",
                 "-o",
                 f"gid={os.getgid()}",
-                "-o",
-                "follow_symlinks",
-                f"{hostname}:/etc/config",
+                f"{target_connection_str}:/etc/config",
                 dir,
             ],
             stdout=sys.stdout,
