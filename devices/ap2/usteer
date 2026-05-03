@@ -1,0 +1,16 @@
+config usteer
+    # Inter-AP comm network.
+    option network 'lan'
+    # Just steer between the two networks on this device.
+    option local_mode '1'
+    option ipv6 '1'
+
+    option syslog '1'
+    option debug_level '1'
+
+    # Default params to enable roaming and band steering:
+    # Minimum signal-to-noise ratio or signal level (dBm) before attempting to trigger
+    # client scans for roaming
+    option roam_scan_snr '-65'
+    # Minimum signal strength difference until AP steering policy is active
+    option signal_diff_threshold '8'

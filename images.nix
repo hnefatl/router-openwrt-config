@@ -50,6 +50,13 @@ let
     packages = [
       # Needed for sshfs/scp during recovery
       "openssh-sftp-server"
+      # Needed for 802.11k/v band steering for better 5GHz usage
+      "usteer"
+      "luci-app-usteer"
+
+      # wpad-mbedtls instead of wpad-basic-mbedtls to support usteer
+      "wpad-mbedtls"
+      "-wpad-basic-mbedtls"
 
       # https://firmware-selector.openwrt.org/?version=25.12.2&target=ipq40xx%2Fmikrotik&id=mikrotik_hap-ac2
       "apk-mbedtls"
