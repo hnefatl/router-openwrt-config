@@ -4,6 +4,6 @@
 **/*~
 **/*.swp
 **/__pycache__
-result/
+result
 .direnv
 

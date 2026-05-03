@@ -11,7 +11,7 @@ import sys
 import config_secrets
 import diff
 from exit_codes import *
-import config_files
+from config_files import *
 import sshfs
 
 
@@ -75,19 +75,32 @@ def main():
 
     with contextlib.ExitStack() as stack:
         if not args.fake_sshfs_dir:
-            d = stack.enter_context(config_files.temp_directory())
+            d = stack.enter_context(temp_directory())
             stack.enter_context(sshfs.mount(args.target, d))
         else:
             d = args.fake_sshfs_dir
             print(f"Not using sshfs, output directory: {d}")
 
-        files = config_files.files_from_dir(target_config_dir, d, secrets)
+        files = files_from_dir(target_config_dir, d, secrets)
+        files += special_files(root_config_dir, d)
         process_files(args, files, secrets)
 
 
-def process_files(
-    args: Args, files: config_files.Files, secrets: config_secrets.Secrets
-):
+def special_files(root_config_dir: pathlib.Path, output_dir: pathlib.Path) -> Files:
+    """Special files that don't follow the per-host structure."""
+    return [
+        # There should be a symlink from
+        # `/etc/dropbear/authorized_keys` -> `/etc/config/authorized_keys`
+        # that this takes advantage of.
+        File.load(
+            sot_path=root_config_dir / "devices/authorized_keys",
+            target_path=output_dir / "authorized_keys",
+            secrets={},
+        )
+    ]
+
+
+def process_files(args: Args, files: Files, secrets: config_secrets.Secrets):
     for file in files:
         if file.target_contents is None:
             if args.dry_run:

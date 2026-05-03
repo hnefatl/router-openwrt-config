@@ -145,5 +145,16 @@ in
     }
   );
 
-  ap2 = openwrt-imagebuilder.lib.build hap_ac2_base;
+  ap2 = openwrt-imagebuilder.lib.build (
+    hap_ac2_base
+    // {
+      files = pkgs.runCommand "image-files" { } ''
+        mkdir -p "$out/etc/uci-defaults"
+        cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
+        touch /etc/config/authorized_keys
+        ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+        EOF
+      '';
+    }
+  );
 }
