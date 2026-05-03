@@ -20,7 +20,8 @@ config device
 config interface 'core'
     option device 'br-lan.1'
     option proto 'static'
-    option ipaddr '10.20.0.1/16'
+    list ipaddr '10.20.0.1/8'
+    option multipath 'off'
     # Setting DNS here enforces captive DNS, but also means if the server
     # is down there's no DNS resolution. For now, I'll take availability.
     #list dns '10.20.1.3'
@@ -144,19 +145,19 @@ config wireguard_wg0 'corp_phone'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'parents_house'
-    option description "Parent's House"
+    option description 'Parent'\''s House'
     option public_key '${wireguard_parents_house_public_key}'
     list allowed_ips '10.29.0.7/32'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'parents_display_pi'
-    option description "Parent's Display Pi"
+    option description 'Parent'\''s Display Pi'
     option public_key '${wireguard_parents_display_pi_public_key}'
     list allowed_ips '10.29.0.8/32'
     option route_allowed_ips '1'
 
 config wireguard_wg0 'personal_laptop'
-    option description "Personal Laptop"
+    option description 'Personal Laptop'
     option public_key '${wireguard_personal_laptop_public_key}'
     list allowed_ips '10.29.0.9/32'
     option route_allowed_ips '1'

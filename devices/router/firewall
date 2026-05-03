@@ -203,3 +203,29 @@ config rule
     list proto 'tcp'
     list proto 'udp'
 
+config zone
+    option name 'untrusted'
+    option input 'REJECT'
+    option output 'ACCEPT'
+    option forward 'REJECT'
+    list network 'untrusted'
+
+config forwarding
+    option src 'untrusted'
+    option dest 'wan'
+
+config forwarding
+    option src 'trusted'
+    option dest 'untrusted'
+
+config zone
+    option name 'untrusted_offline'
+    option input 'REJECT'
+    option output 'ACCEPT'
+    option forward 'REJECT'
+    list network 'untrusted_ofln'
+
+config forwarding
+    option src 'trusted'
+    option dest 'untrusted_offline'
+
