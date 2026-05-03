@@ -7,15 +7,6 @@ config defaults
     option flow_offloading '1'
     option flow_offloading_hw '1'
 
-config zone 'trusted'
-    option name 'trusted'
-    option input 'ACCEPT'
-    option output 'ACCEPT'
-    option forward 'ACCEPT'
-    list network 'core'
-    list network 'trusted'
-    list network 'wg0'
-
 config zone 'wan'
     option name 'wan'
     option input 'REJECT'
@@ -26,9 +17,107 @@ config zone 'wan'
     list network 'wan'
     list network 'wan6'
 
+config zone 'trusted'
+    option name 'trusted'
+    option input 'ACCEPT'
+    option output 'ACCEPT'
+    option forward 'ACCEPT'
+    list network 'core'
+    list network 'trusted'
+    list network 'wg0'
+
+config zone
+    option name 'untrusted'
+    option input 'REJECT'
+    option output 'ACCEPT'
+    option forward 'REJECT'
+    list network 'untrusted'
+
+config zone
+    option name 'untrusted_offline'
+    option input 'REJECT'
+    option output 'ACCEPT'
+    option forward 'REJECT'
+    list network 'untrusted_ofln'
+
 config forwarding
     option src 'trusted'
     option dest 'wan'
+
+config forwarding
+    option src 'untrusted'
+    option dest 'wan'
+
+config forwarding
+    option src 'trusted'
+    option dest 'untrusted'
+
+config forwarding
+    option src 'trusted'
+    option dest 'untrusted_offline'
+
+config redirect
+    option target 'DNAT'
+    option name 'http'
+    option src 'wan'
+    option src_dport '80'
+    option dest 'trusted'
+    option dest_port '80'
+    option dest_ip '10.20.1.3'
+
+config redirect
+    option target 'DNAT'
+    option name 'https'
+    option src 'wan'
+    option src_dport '443'
+    option dest 'trusted'
+    option dest_port '443'
+    option dest_ip '10.20.1.3'
+
+config redirect
+    option target 'DNAT'
+    option name 'vintagestory'
+    option src 'wan'
+    option src_dport '42420'
+    option dest 'trusted'
+    option dest_port '42420'
+    option dest_ip '10.20.1.3'
+
+config rule 'wg'
+    option name 'Allow-WireGuard'
+    option src 'wan'
+    option dest_port '5746'
+    option proto 'udp'
+    option target 'ACCEPT'
+
+config redirect
+    option target 'DNAT'
+    option name 'plex'
+    option src 'wan'
+    option src_dport '32400'
+    option dest 'trusted'
+    option dest_ip '10.20.1.3'
+    option dest_port '32400'
+
+config redirect
+    option target 'DNAT'
+    option name 'external dns'
+    option src 'wan'
+    option src_dport '53'
+    option dest 'trusted'
+    option dest_port '1273'
+    option dest_ip '10.20.1.3'
+
+config rule
+    option name 'Block-TV-Internet'
+    option src 'trusted'
+    option dest 'wan'
+    option target 'REJECT'
+    list src_ip '10.20.2.6'
+    list proto 'tcp'
+    list proto 'udp'
+
+// Default firewall rules:
 
 config include
     option path '/etc/firewall.user'
@@ -141,91 +230,3 @@ config rule
     option dest_port '443'
     option target 'ACCEPT'
     option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
-
-config redirect
-    option target 'DNAT'
-    option name 'http'
-    option src 'wan'
-    option src_dport '80'
-    option dest 'trusted'
-    option dest_port '80'
-    option dest_ip '10.20.1.3'
-
-config redirect
-    option target 'DNAT'
-    option name 'https'
-    option src 'wan'
-    option src_dport '443'
-    option dest 'trusted'
-    option dest_port '443'
-    option dest_ip '10.20.1.3'
-
-config redirect
-    option target 'DNAT'
-    option name 'vintagestory'
-    option src 'wan'
-    option src_dport '42420'
-    option dest 'trusted'
-    option dest_port '42420'
-    option dest_ip '10.20.1.3'
-
-config rule 'wg'
-    option name 'Allow-WireGuard'
-    option src 'wan'
-    option dest_port '5746'
-    option proto 'udp'
-    option target 'ACCEPT'
-
-config redirect
-    option target 'DNAT'
-    option name 'plex'
-    option src 'wan'
-    option src_dport '32400'
-    option dest 'trusted'
-    option dest_ip '10.20.1.3'
-    option dest_port '32400'
-
-config redirect
-    option target 'DNAT'
-    option name 'external dns'
-    option src 'wan'
-    option src_dport '53'
-    option dest 'trusted'
-    option dest_port '1273'
-    option dest_ip '10.20.1.3'
-
-config rule
-    option name 'Block-TV-Internet'
-    option src 'trusted'
-    option dest 'wan'
-    option target 'REJECT'
-    list src_ip '10.20.2.6'
-    list proto 'tcp'
-    list proto 'udp'
-
-config zone
-    option name 'untrusted'
-    option input 'REJECT'
-    option output 'ACCEPT'
-    option forward 'REJECT'
-    list network 'untrusted'
-
-config forwarding
-    option src 'untrusted'
-    option dest 'wan'
-
-config forwarding
-    option src 'trusted'
-    option dest 'untrusted'
-
-config zone
-    option name 'untrusted_offline'
-    option input 'REJECT'
-    option output 'ACCEPT'
-    option forward 'REJECT'
-    list network 'untrusted_ofln'
-
-config forwarding
-    option src 'trusted'
-    option dest 'untrusted_offline'
-

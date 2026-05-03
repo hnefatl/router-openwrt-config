@@ -54,19 +54,17 @@ config dnsmasq
     list address '/pikvm.warthog.keith.collister.xyz/10.20.1.5'
     list address '/servercpu.warthog.keith.collister.xyz/10.20.1.6'
 
-config dhcp 'core'
-    option interface 'core'
-    option start '770'
-    option limit '253'
+config dhcp 'trusted'
+    option interface 'trusted'
     # Some hosts have lower lease times (to detect DHCP misconfigurations
     # faster), but keep the default high so that in the event of a breakage,
     # things keep working for 12h.
     option leasetime '12h'
     option dhcpv4 'server'
     # Default router/last resort gateway is this device.
-    list dhcp_option '3,10.20.0.1'
+    #list dhcp_option '3,10.20.0.1'
     # DNS is this device.
-    list dhcp_option '6,10.20.0.1'
+    #list dhcp_option '6,10.20.0.1'
 
     # ipv6 config
     option ra 'server'
@@ -105,30 +103,10 @@ config host
     option leasetime '10m'
 
 config host
-    option name 'work-laptop'
-    option mac '88:d8:2e:54:5a:1a'
-    option ip '10.20.2.12'
-
-config host
     option name 'shield'
     # Wifi + ethernet
     option mac '48:B0:2D:59:CF:A5 48:B0:2D:59:CF:A7'
     option ip '10.20.2.13'
-
-config host
-    option name 'desktop'
-    option mac 'A8:5E:45:11:03:D8'
-    option ip '10.20.2.5'
-
-config host
-    option name 'lg-tv'
-    option mac '20:28:BC:14:12:8E'
-    option ip '10.20.2.6'
-
-config host
-    option name 'laptop'
-    option mac '84:9E:56:9C:75:29'
-    option ip '10.20.2.7'
 
 config host
     option name 'esp32-bluetooth-proxy'
@@ -162,16 +140,8 @@ config host
     option mac 'DC:CD:18:5B:D9:50 20:1C:3A:BF:89:8C'
     option ip '10.20.1.9'
 
-config host
-    option name 'roll20'
-    option mac '52:54:00:c7:1e:f5'
-    option ip '10.20.1.10'
-
-# Required to resolve devices without DHCP leases.
-config domain
-    option name "warthog"
-    option ip "10.20.1.3"
-
+# These need manual configuration, because they're statically assigned addresses: so DHCP
+# doesn't know what their reported hostnames are.
 config domain
     option name "router"
     option ip "10.20.0.1"
@@ -184,3 +154,6 @@ config domain
     option name "ap2"
     option ip "10.20.0.3"
 
+config domain
+    option name "tvswitch"
+    option ip "10.20.0.4"
