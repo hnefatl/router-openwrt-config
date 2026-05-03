@@ -1,10 +1,100 @@
 { pkgs, openwrt-imagebuilder }:
 let
   profiles = openwrt-imagebuilder.lib.profiles { inherit pkgs; };
+
+  hex_s_base = profiles.identifyProfile "mikrotik_routerboard-760igs" // {
+    packages = [
+      # Needed for sshfs/scp during recovery
+      "openssh-sftp-server"
+
+      # Core packages from the package list at
+      # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
+      "apk-mbedtls"
+      "base-files"
+      "ca-bundle"
+      "dnsmasq"
+      "dropbear"
+      "firewall4"
+      "fstools"
+      "kmod-crypto-hw-eip93"
+      "kmod-gpio-button-hotplug"
+      "kmod-leds-gpio"
+      "kmod-nft-offload"
+      "libc"
+      "libgcc"
+      "libustream-mbedtls"
+      "logd"
+      "mtd"
+      "netifd"
+      "nftables"
+      "odhcp6c"
+      "odhcpd-ipv6only"
+      "ppp"
+      "ppp-mod-pppoe"
+      "procd-ujail"
+      "uboot-envtools"
+      "uci"
+      "uclient-fetch"
+      "urandom-seed"
+      "urngd"
+      "wpad-basic-mbedtls"
+      "kmod-usb3"
+      "-uboot-envtools"
+      "kmod-sfp"
+      "-wpad-basic-mbedtls"
+      "luci"
+      "luci-app-attendedsysupgrade"
+    ];
+  };
+  hap_ac2_base = profiles.identifyProfile "mikrotik_hap-ac2" // {
+    packages = [
+      # Needed for sshfs/scp during recovery
+      "openssh-sftp-server"
+
+      # https://firmware-selector.openwrt.org/?version=25.12.2&target=ipq40xx%2Fmikrotik&id=mikrotik_hap-ac2
+      "apk-mbedtls"
+      "ath10k-firmware-qca4019-ct"
+      "base-files"
+      "ca-bundle"
+      "dnsmasq"
+      "dropbear"
+      "firewall4"
+      "fstools"
+      "kmod-ath10k-ct"
+      "kmod-gpio-button-hotplug"
+      "kmod-leds-gpio"
+      "kmod-nft-offload"
+      "kmod-usb-dwc3"
+      "kmod-usb-dwc3-qcom"
+      "kmod-usb3"
+      "libc"
+      "libgcc"
+      "libustream-mbedtls"
+      "logd"
+      "mtd"
+      "netifd"
+      "nftables"
+      "odhcp6c"
+      "odhcpd-ipv6only"
+      "ppp"
+      "ppp-mod-pppoe"
+      "procd-ujail"
+      "uboot-envtools"
+      "uci"
+      "uclient-fetch"
+      "urandom-seed"
+      "urngd"
+      "wpad-basic-mbedtls"
+      "-kmod-ath10k-ct"
+      "kmod-ath10k-ct-smallbuffers"
+      "luci"
+      "luci-app-attendedsysupgrade"
+    ];
+  };
 in
 {
   router = openwrt-imagebuilder.lib.build (
-    profiles.identifyProfile "mikrotik_routerboard-760igs"
+    hex_s_base
     // {
       packages = [
         # Needed for extroot below
@@ -18,47 +108,6 @@ in
         "kmod-usb-storage"
         "kmod-usb-core"
         "kmod-usb-storage"
-
-        # Needed for sshfs/scp during recovery
-        "openssh-sftp-server"
-
-        # Core packages from the package list at
-        # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
-        "apk-mbedtls"
-        "base-files"
-        "ca-bundle"
-        "dnsmasq"
-        "dropbear"
-        "firewall4"
-        "fstools"
-        "kmod-crypto-hw-eip93"
-        "kmod-gpio-button-hotplug"
-        "kmod-leds-gpio"
-        "kmod-nft-offload"
-        "libc"
-        "libgcc"
-        "libustream-mbedtls"
-        "logd"
-        "mtd"
-        "netifd"
-        "nftables"
-        "odhcp6c"
-        "odhcpd-ipv6only"
-        "ppp"
-        "ppp-mod-pppoe"
-        "procd-ujail"
-        "uboot-envtools"
-        "uci"
-        "uclient-fetch"
-        "urandom-seed"
-        "urngd"
-        "wpad-basic-mbedtls"
-        "kmod-usb3"
-        "-uboot-envtools"
-        "kmod-sfp"
-        "-wpad-basic-mbedtls"
-        "luci"
-        "luci-app-attendedsysupgrade"
       ];
 
       # Configure extroot on the ROM via fstab.
@@ -95,4 +144,6 @@ in
       '';
     }
   );
+
+  ap2 = openwrt-imagebuilder.lib.build hap_ac2_base;
 }
