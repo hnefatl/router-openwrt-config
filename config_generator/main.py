@@ -19,7 +19,7 @@ import sshfs
 class Args:
     target: str
     target_connection_str: str
-    fake_sshfs_dir: pathlib.Path | None
+    target_dir: pathlib.Path | None
     dry_run: bool
 
 
@@ -34,7 +34,7 @@ def parse_args() -> Args:
         help="user@ip string for use in sshfs.",
     )
     parser.add_argument(
-        "--fake_sshfs_dir",
+        "--target-dir",
         default="",
         help="Don't use sshfs, output files to this directory instead.",
     )
@@ -45,12 +45,12 @@ def parse_args() -> Args:
         help="Dry-run mode.",
     )
     args = parser.parse_args()
-    fake_sshfs_dir = None
-    if args.fake_sshfs_dir:
-        fake_sshfs_dir = pathlib.Path(args.fake_sshfs_dir)
-        if not fake_sshfs_dir.is_absolute():
+    target_dir = None
+    if args.target_dir:
+        target_dir = pathlib.Path(args.target_dir)
+        if not target_dir.is_absolute():
             raise RuntimeError("Absolute path required for fake sshfs dir.")
-        if not fake_sshfs_dir.exists():
+        if not target_dir.exists():
             raise RuntimeError("Fake sshfs dir must exist")
 
     return Args(
@@ -60,7 +60,7 @@ def parse_args() -> Args:
             if args.target_connection_str
             else f"root@{args.target}.lan"
         ),
-        fake_sshfs_dir=fake_sshfs_dir,
+        target_dir=target_dir,
         dry_run=bool(args.dry_run),
     )
 
@@ -85,11 +85,11 @@ def main():
     secrets = config_secrets.load_secrets(secrets_file) if secrets_file.exists() else {}
 
     with contextlib.ExitStack() as stack:
-        if not args.fake_sshfs_dir:
+        if not args.target_dir:
             d = stack.enter_context(temp_directory())
             stack.enter_context(sshfs.mount(args.target_connection_str, d))
         else:
-            d = args.fake_sshfs_dir
+            d = args.target_dir
             print(f"Not using sshfs, output directory: {d}")
 
         files = files_from_dir(target_config_dir, d, secrets)
