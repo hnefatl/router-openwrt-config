@@ -117,7 +117,7 @@ config rule
     list proto 'tcp'
     list proto 'udp'
 
-// Default firewall rules:
+# Default firewall rules:
 
 config include
     option path '/etc/firewall.user'
