@@ -129,10 +129,23 @@ in
         "kmod-usb-storage"
         "kmod-usb-core"
         "kmod-usb-storage"
+
+        # DNS
+        "bind-server"
       ];
 
       # Configure extroot on the ROM via fstab.
       files = pkgs.runCommand "image-files" { } ''
+        mkdir -p "$out/etc/uci-defaults"
+        cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
+        touch /etc/config/authorized_keys
+        ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+
+        cat > $out/etc/uci-defaults/99-symlink-bind <<EOF
+        mkdir -p /etc/config/bind
+        chown -R bind /etc/config/bind
+        ln -sf /etc/config/bind /etc/bind
+
         mkdir -p $out/etc/config
         cat > $out/etc/config/fstab <<EOF
         config global
