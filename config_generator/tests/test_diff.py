@@ -30,6 +30,3 @@ class TestDiff(unittest.TestCase):
             +bop"""
         )
         self.assertEqual(get_diff(a, b, colourise=False), expected)
-
-    def test_print_diff_tabs(self):
-        self.assertEqual(get_diff("\t", "    "), "Files are identical.")

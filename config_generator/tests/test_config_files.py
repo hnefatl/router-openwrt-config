@@ -1,7 +1,4 @@
-import contextlib
 import pathlib
-import tempfile
-import textwrap
 import unittest
 
 from config_files import *
@@ -9,7 +6,7 @@ from config_files import *
 
 def write(dir: pathlib.Path, filename: str, contents: str) -> pathlib.Path:
     path = dir / filename
-    path.write_text(textwrap.dedent(contents))
+    path.write_text(contents)
     return path
 
 
@@ -69,3 +66,22 @@ class TestFiles(unittest.TestCase):
                     ),
                 ],
             )
+
+    def test_tabs(self):
+        with temp_directory() as sot_dir, temp_directory() as target_dir:
+            write(sot_dir, "foo", "    ")
+            write(target_dir, "foo", "\t")
+            files = files_from_dir(sot_dir, target_dir, {})
+
+            self.assertListEqual(
+                files,
+                [
+                    File(
+                        sot_path=sot_dir / "foo",
+                        sot_expanded_contents="    ",
+                        target_path=target_dir / "foo",
+                        target_contents="    ",
+                    ),
+                ]
+            )
+
