@@ -82,6 +82,36 @@ class TestFiles(unittest.TestCase):
                         target_path=target_dir / "foo",
                         target_contents="    ",
                     ),
-                ]
+                ],
             )
 
+    def test_directories(self):
+        with temp_directory() as sot_dir, temp_directory() as target_dir:
+            d = sot_dir / "dir"
+            d.mkdir()
+            write(d, "foo", "foo")
+
+            files = files_from_dir(sot_dir, target_dir, {})
+
+            self.assertListEqual(
+                files,
+                [
+                    File(
+                        sot_path=d / "foo",
+                        sot_expanded_contents="foo",
+                        target_path=target_dir / "dir/foo",
+                        target_contents=None,
+                    ),
+                ],
+            )
+
+    def test_write_target(self):
+        with temp_directory() as d:
+            f = File(
+                sot_path=d / "foo",
+                sot_expanded_contents="",
+                target_path=d / "dir/foo",
+                target_contents=None,
+            )
+            f.write_target("foo")
+            self.assertEqual(f.target_path.read_text(), "foo")

@@ -38,6 +38,10 @@ class File:
         f.reload_contents(secrets)
         return f
 
+    def write_target(self, contents: str):
+        self.target_path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        self.target_path.write_text(contents)
+
     def reload_contents(self, secrets: Secrets):
         self.target_contents = None
         if self.target_path.exists():
@@ -65,11 +69,16 @@ def files_from_dir(
     sot_dir: pathlib.Path, target_dir: pathlib.Path, secrets: Secrets
 ) -> Files:
     files = []
-    for sot_path in sot_dir.iterdir():
-        if not sot_path.is_file():
+    frontier = list(sot_dir.iterdir())
+    for sot_path in frontier:
+        if sot_path.is_dir():
+            # Descend into directories
+            frontier.extend(sot_path.iterdir())
+            continue
+        elif not sot_path.is_file():
             continue
 
-        target_path = target_dir / sot_path.name
+        target_path = target_dir / sot_path.relative_to(sot_dir)
         if sot_path.suffix == ".tmpl":
             target_path = target_path.with_suffix("")
 

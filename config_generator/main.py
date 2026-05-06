@@ -117,7 +117,7 @@ def process_files(args: Args, files: Files, secrets: config_secrets.Secrets):
             if args.dry_run:
                 print(f"[dry-run] Would create {file.target_path}")
             else:
-                file.target_path.write_text(file.sot_expanded_contents)
+                file.write_target(file.sot_expanded_contents)
             continue
 
         while file.sot_expanded_contents != file.target_contents:
@@ -133,7 +133,7 @@ def process_files(args: Args, files: Files, secrets: config_secrets.Secrets):
                     if c == "l":
                         file.sot_path.write_text(file.target_contents)
                     else:
-                        file.target_path.write_text(file.sot_expanded_contents)
+                        file.write_target(file.sot_expanded_contents)
             elif c == "s":
                 break
             elif c == "e":
