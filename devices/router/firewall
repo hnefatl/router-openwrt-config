@@ -58,21 +58,21 @@ config forwarding
 
 config redirect
     option target 'DNAT'
-    option name 'http'
+    option name 'warthog-http'
     option src 'wan'
     option src_dport '80'
     option dest 'trusted'
     option dest_port '80'
-    option dest_ip '10.20.1.3'
+    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
 
 config redirect
     option target 'DNAT'
-    option name 'https'
+    option name 'warthog-https'
     option src 'wan'
     option src_dport '443'
     option dest 'trusted'
     option dest_port '443'
-    option dest_ip '10.20.1.3'
+    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
 
 config redirect
     option target 'DNAT'
@@ -81,7 +81,7 @@ config redirect
     option src_dport '42420'
     option dest 'trusted'
     option dest_port '42420'
-    option dest_ip '10.20.1.3'
+    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
 
 config rule 'wg'
     option name 'Allow-WireGuard'
@@ -96,17 +96,8 @@ config redirect
     option src 'wan'
     option src_dport '32400'
     option dest 'trusted'
-    option dest_ip '10.20.1.3'
+    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
     option dest_port '32400'
-
-config redirect
-    option target 'DNAT'
-    option name 'external dns'
-    option src 'wan'
-    option src_dport '53'
-    option dest 'trusted'
-    option dest_port '1273'
-    option dest_ip '10.20.1.3'
 
 config rule
     option name 'Block-TV-Internet'
@@ -117,10 +108,17 @@ config rule
     list proto 'tcp'
     list proto 'udp'
 
-# Default firewall rules:
+config rule
+    option name 'Allow-External-DNS'
+    option src 'wan'
+    option dest_port '53'
+    list dest_ip '10.20.0.1'
+    list dest_ip '89.34.167.102'
+    list dest_ip '2a01:4b00:bd20:7010::1'
+    option proto 'udp'
+    option target 'ACCEPT'
 
-config include
-    option path '/etc/firewall.user'
+# Default firewall rules:
 
 config rule
     option name 'Allow-DHCP-Renew'
@@ -214,19 +212,3 @@ config rule
     option dest_port '500'
     option proto 'udp'
     option target 'ACCEPT'
-
-config rule
-    option name 'Server-HTTP'
-    option src 'wan'
-    option dest 'trusted'
-    option dest_port '80'
-    option target 'ACCEPT'
-    option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'
-
-config rule
-    option name 'Server-HTTPS'
-    option src 'wan'
-    option dest 'trusted'
-    option dest_port '443'
-    option target 'ACCEPT'
-    option dest_ip '2a02:169:5bef:0:82ee:73ff:fed9:2390'

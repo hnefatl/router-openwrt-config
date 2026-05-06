@@ -1,33 +1,3 @@
-# 10.20.0.0/24     networking gear:
-#            1        router, static IP since runs DHCP
-#            2        access point for untrusted network
-#            3        access point for SSID network
-# 10.20.1.0/24     statically configured things:
-#            3        warthog (physical server)
-#            4        printer (HP 5010 keeps trying to use 192.168.1.x/24)
-#            5        pikvm
-#            6        server cpu
-#            7        octoprint
-# 10.20.2.0/24     DHCP reservations (e.g. hoover, smart light hub) which use
-#                    DHCP but are given fixed addresses
-#            5     PC
-#            6     physical TV
-#            13    NVIDIA Shield
-# 10.20.3.0/24     open season, DHCP dynamic assignment space
-# 10.20.4.0/24     docker
-#
-# 10.21.0.0/24     VPN devices.
-#
-#
-# DNS routing goes:
-#  dnsmasq (router#53) -> adguard (router#54) -> bind9 (warthog#1273)
-#
-# DNS resolution should use the local device names provided by `config host` below,
-# *as long as the DHCP lease exists*: if the device hasn't connected recently, the
-# resolution will fail.
-# `config domain` also provides static DNS resolutions for devices without a DHCP lease.
-
-# Adguard is used as the primary DNS resolver, dnsmasq is used as a fallback once adguard has filtered out ads.
 config dnsmasq
     option port '53'
     option noresolv '0'
@@ -68,15 +38,15 @@ config dhcp 'trusted'
 
     # ipv6 config
     option ra 'server'
-    option dns_service '0'
-    list ra_flags 'none'
+    option ra_slaac '1'
+    # Announce this interface's address as the IPv6 DNS server.
+    option dns_service '1'
     option ra_preference 'medium'
 
 config odhcpd 'odhcpd'
     option maindhcp '0'
     option leasefile '/tmp/odhcpd.leases'
     option leasetrigger '/usr/sbin/odhcpd-update'
-    option loglevel '4'
     option piodir '/tmp/odhcpd-piodir'
     option hostsdir '/tmp/hosts'
 
@@ -92,12 +62,12 @@ config boot 'linux'
 config host
     option name 'hoover'
     option mac '50:EC:50:03:26:D9'
-    option ip '10.20.2.10'
+    option ip '10.20.20.10'
 
 config host
     option name 'phillips-bridge'
     option mac 'EC:B5:FA:80:77:5F'
-    option ip '10.20.2.11'
+    option ip '10.20.20.11'
     # Detect DHCP misconfigs quickly. Lights not turning on isn't the end of
     # the world, but very obvious to know something needs fixing.
     option leasetime '10m'
@@ -106,39 +76,24 @@ config host
     option name 'shield'
     # Wifi + ethernet
     option mac '48:B0:2D:59:CF:A5 48:B0:2D:59:CF:A7'
-    option ip '10.20.2.13'
+    option ip '10.20.20.13'
 
 config host
     option name 'esp32-bluetooth-proxy'
     option mac 'C8:F0:9E:35:85:F4'
-    option ip '10.20.5.2'
-
-config host
-    option name 'pikvm'
-    option mac 'DC:A6:32:50:9D:3A'
-    option ip '10.20.1.5'
-
-config host
-    option name 'servercpu'
-    option mac '00:30:59:28:D0:00'
-    option ip '10.20.1.6'
+    option ip '10.20.20.2'
 
 config host
     option name 'octoprint'
     # Ethernet + Wifi
     option mac 'D8:3A:DD:58:45:CD D8:3A:DD:58:45:CE'
-    option ip '10.20.1.7'
-
-config host
-    option name 'crash'
-    option mac '52:54:00:3C:9B:6A'
-    option ip '10.20.1.8'
+    option ip '10.20.20.7'
 
 config host
     option name 'nintendo-switch'
     # Wifi + ethernet
     option mac 'DC:CD:18:5B:D9:50 20:1C:3A:BF:89:8C'
-    option ip '10.20.1.9'
+    option ip '10.20.20.9'
 
 # These need manual configuration, because they're statically assigned addresses: so DHCP
 # doesn't know what their reported hostnames are.
