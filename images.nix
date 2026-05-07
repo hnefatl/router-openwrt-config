@@ -132,6 +132,7 @@ in
 
         # DNS
         "bind-server"
+        "bind-tools"
       ];
 
       # Configure extroot on the ROM via fstab.
