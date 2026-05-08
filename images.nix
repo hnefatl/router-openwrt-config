@@ -7,6 +7,8 @@ let
       "bash"
       "vim"
       "curl"
+
+      "avahi-daemon"
     ];
   };
 
@@ -147,6 +149,10 @@ in
         chown -R bind /etc/config/bind
         ln -sf /etc/config/bind /etc/bind
 
+        cat > $out/etc/uci-defaults/99-symlink-avahi <<EOF
+        touch /etc/config/avahi
+        ln -sf /etc/config/avahi /etc/avahi/avahi-daemon.conf
+
         mkdir -p $out/etc/config
         cat > $out/etc/config/fstab <<EOF
         config global
@@ -188,6 +194,10 @@ in
         cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
         touch /etc/config/authorized_keys
         ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+
+        cat > $out/etc/uci-defaults/99-symlink-avahi <<EOF
+        touch /etc/config/avahi
+        ln -sf /etc/config/avahi /etc/avahi/avahi-daemon.conf
         EOF
       '';
     }

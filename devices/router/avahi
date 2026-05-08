@@ -1,0 +1,12 @@
+[server]
+use-ipv4=yes
+use-ipv6=yes
+
+[publish]
+publish-addresses=yes
+publish-hinfo=yes
+publish-domain=yes
+
+[reflector]
+enable-reflector=yes
+reflect-ipv=no
