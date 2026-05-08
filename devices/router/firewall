@@ -56,29 +56,35 @@ config forwarding
     option src 'trusted'
     option dest 'untrusted_offline'
 
+# Warthog HTTP: port-forward IPv4, allow IPv6
 config redirect
     option target 'DNAT'
-    option name 'warthog-http'
+    option name 'warthog-ipv4-http'
     option src 'wan'
+    option dest 'trusted'
     option src_dport '80'
     option dest_port '80'
-    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
-
+    option dest_ip '10.20.10.98'
 config redirect
     option target 'DNAT'
-    option name 'warthog-https'
+    option name 'warthog-ipv4-https'
     option src 'wan'
+    option dest 'trusted'
     option src_dport '443'
     option dest_port '443'
-    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
-
-config redirect
-    option target 'DNAT'
-    option name 'vintagestory'
+    option dest_ip '10.20.10.98'
+config rule
+    option name 'warthog-ipv6-http'
     option src 'wan'
-    option src_dport '42420'
-    option dest_port '42420'
-    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
+    option dest_port '80'
+    list dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
+    option target 'ACCEPT'
+config rule
+    option name 'warthog-ipv6-https'
+    option src 'wan'
+    option dest_port '443'
+    list dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
+    option target 'ACCEPT'
 
 config rule 'wg'
     option name 'Allow-WireGuard'
@@ -87,14 +93,13 @@ config rule 'wg'
     option proto 'udp'
     option target 'ACCEPT'
 
-config redirect
-    option target 'DNAT'
-    option name 'plex'
+config rule
+    option name 'Vintagestory'
     option src 'wan'
-    option src_dport '32400'
-    option dest 'trusted'
-    option dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
-    option dest_port '32400'
+    option dest_port '42420'
+    list dest_ip '2a01:4b00:bd20:7010:230:59ff:fe28:d000'
+    option proto 'udp'
+    option target 'ACCEPT'
 
 config rule
     option name 'Block-TV-Internet'
