@@ -13,3 +13,10 @@ config zone
     option forward 'ACCEPT'
     list network 'core'
     list network 'trusted'
+
+config zone
+    option name 'untrusted'
+    option input 'ACCEPT'
+    option output 'ACCEPT'
+    option forward 'ACCEPT'
+    list network 'untrusted'

@@ -8,7 +8,8 @@ let
       "vim"
       "curl"
 
-      "avahi-daemon"
+      # Needed for sshfs/scp during recovery
+      "openssh-sftp-server"
     ];
   };
 
@@ -16,10 +17,7 @@ let
     profiles.identifyProfile "mikrotik_routerboard-760igs"
     // base
     // {
-      packages = [
-        # Needed for sshfs/scp during recovery
-        "openssh-sftp-server"
-
+      packages = base.packages ++ [
         # Core packages from the package list at
         # https://firmware-selector.openwrt.org/?version=25.12.2&target=ramips%2Fmt7621&id=mikrotik_routerboard-760igs
         "apk-mbedtls"
@@ -63,13 +61,7 @@ let
     profiles.identifyProfile "mikrotik_hap-ac2"
     // base
     // {
-      packages = [
-        # Needed for sshfs/scp during recovery
-        "openssh-sftp-server"
-        # Needed for 802.11k/v band steering for better 5GHz usage
-        "usteer"
-        "luci-app-usteer"
-
+      packages = base.packages ++ [
         # Lightweight mDNS support on devices that don't need reflection.
         "umdns"
 
@@ -122,7 +114,7 @@ in
   router = openwrt-imagebuilder.lib.build (
     hex_s_base
     // {
-      packages = [
+      packages = hex_s_base.packages ++ [
         # Needed for extroot below
         "block-mount"
         "e2fsprogs"
@@ -138,6 +130,9 @@ in
         # DNS
         "bind-server"
         "bind-tools"
+
+        # mDNS with reflector support
+        "avahi-daemon"
       ];
 
       # Configure extroot on the ROM via fstab.
@@ -192,22 +187,23 @@ in
   ap2 = openwrt-imagebuilder.lib.build (
     hap_ac2_base
     // {
+      packages = hap_ac2_base.packages ++ [
+        # Needed for 802.11k/v band steering between 2.4/5GHz.
+        "usteer"
+        "luci-app-usteer"
+      ];
+
       files = pkgs.runCommand "image-files" { } ''
         mkdir -p "$out/etc/uci-defaults"
         cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
         touch /etc/config/authorized_keys
         ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
-
-        cat > $out/etc/uci-defaults/99-symlink-avahi <<EOF
-        touch /etc/config/avahi
-        ln -sf /etc/config/avahi /etc/avahi/avahi-daemon.conf
-        EOF
       '';
     }
   );
 
   tvswitch = openwrt-imagebuilder.lib.build (
-    hex_s_base
+    hap_ac2_base
     // {
       files = pkgs.runCommand "image-files" { } ''
         mkdir -p "$out/etc/uci-defaults"

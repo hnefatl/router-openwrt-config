@@ -1,0 +1,5 @@
+config umdns
+    option jail 1
+    list network 'core'
+    list network 'trusted'
+
