@@ -70,6 +70,9 @@ let
         "usteer"
         "luci-app-usteer"
 
+        # Lightweight mDNS support on devices that don't need reflection.
+        "umdns"
+
         # wpad-mbedtls instead of wpad-basic-mbedtls to support usteer
         "wpad-mbedtls"
         "-wpad-basic-mbedtls"
