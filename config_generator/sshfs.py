@@ -9,7 +9,7 @@ import sys
 def mount(target_connection_str: str, dir: pathlib.Path):
     """Context manager to mount/unmount sshfs"""
     try:
-        r = subprocess.check_call(
+        subprocess.check_call(
             args=[
                 "sshfs",
                 "-o",

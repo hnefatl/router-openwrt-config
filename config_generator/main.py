@@ -58,7 +58,7 @@ def parse_args() -> Args:
         target_connection_str=(
             args.target_connection_str
             if args.target_connection_str
-            else f"root@{args.target}.lan"
+            else f"root@{args.target}.local"
         ),
         target_dir=target_dir,
         dry_run=bool(args.dry_run),
