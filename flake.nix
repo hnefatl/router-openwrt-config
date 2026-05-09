@@ -21,6 +21,9 @@
         packages = with pkgs; [
           python3
           sshfs
+
+          # To have on hand for firmware flashing.
+          dnsmasq
         ];
       };
       packages.${system} = import ./images.nix { inherit pkgs openwrt-imagebuilder; };
