@@ -62,12 +62,12 @@ let
     // base
     // {
       packages = base.packages ++ [
-        # Lightweight mDNS support on devices that don't need reflection.
-        "umdns"
-
         # wpad-mbedtls instead of wpad-basic-mbedtls to support usteer
         "wpad-mbedtls"
         "-wpad-basic-mbedtls"
+
+        # Simple mDNS without reflector support.
+        "umdns"
 
         # https://firmware-selector.openwrt.org/?version=25.12.2&target=ipq40xx%2Fmikrotik&id=mikrotik_hap-ac2
         "apk-mbedtls"
@@ -131,8 +131,9 @@ in
         "bind-server"
         "bind-tools"
 
-        # mDNS with reflector support
+        # mDNS with reflector support.
         "avahi-daemon"
+        "avahi-utils"
       ];
 
       # Configure extroot on the ROM via fstab.
@@ -141,15 +142,18 @@ in
         cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
         touch /etc/config/authorized_keys
         ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+        EOF
 
         cat > $out/etc/uci-defaults/99-symlink-bind <<EOF
         mkdir -p /etc/config/bind
         chown -R bind /etc/config/bind
         ln -sf /etc/config/bind /etc/bind
+        EOF
 
         cat > $out/etc/uci-defaults/99-symlink-avahi <<EOF
         touch /etc/config/avahi
         ln -sf /etc/config/avahi /etc/avahi/avahi-daemon.conf
+        EOF
 
         mkdir -p $out/etc/config
         cat > $out/etc/config/fstab <<EOF
@@ -198,6 +202,7 @@ in
         cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
         touch /etc/config/authorized_keys
         ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
+        EOF
       '';
     }
   );
