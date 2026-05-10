@@ -36,7 +36,7 @@ config dhcp 'wan'
 
 config boot 'linux'
     option filename 'netboot.xyz.efi'
-    option serveraddress '10.20.1.3'
+    option serveraddress '10.20.10.98'
     option servername 'warthog'
 
 # I don't like doing static leases, but warthog needs a fixed IP
@@ -47,57 +47,3 @@ config host
     option name 'warthog'
     option mac '00:30:59:28:d0:00'
     option ip '10.20.10.98'
-
-config host
-    option name 'hoover'
-    option mac '50:EC:50:03:26:D9'
-    option ip '10.20.20.10'
-
-config host
-    option name 'phillips-bridge'
-    option mac 'EC:B5:FA:80:77:5F'
-    option ip '10.20.20.11'
-    # Detect DHCP misconfigs quickly. Lights not turning on isn't the end of
-    # the world, but very obvious to know something needs fixing.
-    option leasetime '10m'
-
-config host
-    option name 'shield'
-    # Wifi + ethernet
-    option mac '48:B0:2D:59:CF:A5 48:B0:2D:59:CF:A7'
-    option ip '10.20.20.13'
-
-config host
-    option name 'esp32-bluetooth-proxy'
-    option mac 'C8:F0:9E:35:85:F4'
-    option ip '10.20.20.2'
-
-config host
-    option name 'octoprint'
-    # Ethernet + Wifi
-    option mac 'D8:3A:DD:58:45:CD D8:3A:DD:58:45:CE'
-    option ip '10.20.20.7'
-
-config host
-    option name 'nintendo-switch'
-    # Wifi + ethernet
-    option mac 'DC:CD:18:5B:D9:50 20:1C:3A:BF:89:8C'
-    option ip '10.20.20.9'
-
-# These need manual configuration, because they're statically assigned addresses: so DHCP
-# doesn't know what their reported hostnames are.
-config domain
-    option name "router"
-    option ip "10.20.0.1"
-
-config domain
-    option name "ap1"
-    option ip "10.20.0.2"
-
-config domain
-    option name "ap2"
-    option ip "10.20.0.3"
-
-config domain
-    option name "tvswitch"
-    option ip "10.20.0.4"

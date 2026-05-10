@@ -134,6 +134,13 @@ in
         # mDNS with reflector support.
         "avahi-daemon"
         "avahi-utils"
+
+        # Wireguard
+        "luci-proto-wireguard"
+        "qrencode"
+
+        # Home assistant
+        "luci-mod-rpc"
       ];
 
       # Configure extroot on the ROM via fstab.
@@ -147,6 +154,7 @@ in
         cat > $out/etc/uci-defaults/99-symlink-bind <<EOF
         mkdir -p /etc/config/bind
         chown -R bind /etc/config/bind
+        rm -rf /etc/bind
         ln -sf /etc/config/bind /etc/bind
         EOF
 
