@@ -47,3 +47,10 @@ config host
     option name 'warthog'
     option mac '00:30:59:28:d0:00'
     option ip '10.20.10.98'
+
+# OctoPi won't generate SLAAC addresses, so has no stable address.
+# Not sure if that's because it's running an old release?
+config host
+    option name 'octopi'
+    option mac 'd8:3a:dd:58:45:ce'
+    option ip '10.20.10.97'
