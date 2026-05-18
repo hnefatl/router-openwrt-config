@@ -54,3 +54,9 @@ config host
     option name 'octopi'
     option mac 'd8:3a:dd:58:45:ce'
     option ip '10.20.10.97'
+
+# ESP32, ipv4-only, and needs a static IP for homeassistant to discover.
+config host
+    option name 'airgradient'
+    option mac '80:f1:b2:58:6d:88'
+    option ip '10.20.10.96'
