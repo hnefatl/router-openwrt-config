@@ -60,3 +60,9 @@ config host
     option name 'airgradient'
     option mac '80:f1:b2:58:6d:88'
     option ip '10.20.10.96'
+
+# Seems to change its SLAAC address?? Not sure, but it's not stable, so pin.
+config host
+    option name 'tv'
+    option mac '48:b0:2d:59:cf:a7'
+    option ip '10.20.10.95'
