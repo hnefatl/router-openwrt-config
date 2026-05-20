@@ -11,10 +11,6 @@ config dhcp 'trusted'
     # things keep working for 12h.
     option leasetime '12h'
     option dhcpv4 'server'
-    # Default router/last resort gateway is this device.
-    #list dhcp_option '3,10.20.0.1'
-    # DNS is this device.
-    #list dhcp_option '6,10.20.0.1'
 
     # ipv6 config
     option ra 'server'
