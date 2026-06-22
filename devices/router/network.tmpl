@@ -40,6 +40,11 @@ config interface 'untrusted'
     option proto 'static'
     option device 'br-lan.20'
     list ipaddr '10.20.20.1/24'
+    # I have no idea why, but after tcpdumping Withings Body+, it gets a valid IP
+    # on a valid subnet then decides to send DNS to 192.168.250.1????
+    # So fake that IP being a valid address for this interface, so it sends DNS here,
+    # and we handle it normally.
+    list ipaddr '192.168.250.1/32'
     option ip6assign '64'
     option ip6hint '20'
     option ip6ifaceid '::1'
