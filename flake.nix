@@ -21,6 +21,7 @@
         packages = with pkgs; [
           python3
           sshfs
+          wireshark
 
           # To have on hand for firmware flashing.
           dnsmasq
