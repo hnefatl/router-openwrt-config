@@ -28,14 +28,14 @@ config zone 'trusted'
 
 config zone
     option name 'untrusted'
-    option input 'REJECT'
+    option input 'ACCEPT'
     option output 'ACCEPT'
     option forward 'REJECT'
     list network 'untrusted'
 
 config zone
     option name 'untrusted_offline'
-    option input 'REJECT'
+    option input 'ACCEPT'
     option output 'ACCEPT'
     option forward 'REJECT'
     list network 'untrusted_ofln'
