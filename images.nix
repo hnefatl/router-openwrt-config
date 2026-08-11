@@ -10,6 +10,9 @@ let
 
       # Needed for sshfs/scp during recovery
       "openssh-sftp-server"
+
+      # Convenient for debugging
+      "tcpdump"
     ];
   };
 

@@ -28,8 +28,7 @@ config wifi-device 'radio1'
 
 config wifi-iface 'default_radio1'
     option device 'radio1'
-    # TODO: change to untrusted_ofln
-    option network 'trusted'
+    option network 'untrusted_ofln'
     option mode 'ap'
     option encryption 'psk2'
     option key '${wifi_dns_password}'

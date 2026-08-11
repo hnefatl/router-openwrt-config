@@ -36,6 +36,11 @@ config bridge-vlan
     option vlan '20'
     list ports 'wan:t'
 
+config bridge-vlan
+    option device 'br-lan'
+    option vlan '21'
+    list ports 'wan:t'
+
 config interface 'core'
     option device 'br-lan.1'
     option proto 'static'
@@ -62,3 +67,13 @@ config interface 'untrusted'
     list ip6addr 'fdf3:685c:acae:20::4/64'
     list ip6addr '2a01:4b00:bd20:7020::4/64'
     list dns 'fdf3:685c:acae:20::1'
+
+config interface 'untrusted_ofln'
+    option proto 'static'
+    option device 'br-lan.21'
+    list ipaddr '10.20.21.4/24'
+    option gateway '10.20.21.1'
+    list ip6addr 'fdf3:685c:acae:21::4/64'
+    list ip6addr '2a01:4b00:bd20:7021::4/64'
+    list dns 'fdf3:685c:acae:21::1'
+ 
