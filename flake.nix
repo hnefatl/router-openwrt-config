@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     openwrt-imagebuilder.url = "github:astro/nix-openwrt-imagebuilder";
+    #openwrt-imagebuilder.url = "path:/home/keith/projects/nix-openwrt-imagebuilder";
   };
   outputs =
     {
