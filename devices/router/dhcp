@@ -85,5 +85,5 @@ config host
 config host
     option name 'p2s'
     option mac '3c:1a:cc:dc:ed:51'
-    option ip '10.20.10.94'
+    option ip '10.20.20.94'
 
