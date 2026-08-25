@@ -87,8 +87,3 @@ config host
     option mac '3c:1a:cc:dc:ed:51'
     option ip '10.20.20.94'
 
-# Seems to need a more fixed allocation, maybe because it deep sleeps?
-config host
-    option name 'withings'
-    option mac '00:24:e4:c2:63:f0'
-    option ip '10.20.20.93'

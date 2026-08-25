@@ -44,7 +44,9 @@ config interface 'untrusted'
     # on a valid subnet then decides to send DNS to 192.168.250.1????
     # So fake that IP being a valid address for this interface, so it sends DNS here,
     # and we handle it normally.
-    list ipaddr '192.168.250.1/32'
+    # Also give that device a proper static IP on this subnet (192.168.250.2) to
+    # make it feel more at home.
+    list ipaddr '192.168.250.1/30'
     option ip6assign '64'
     option ip6hint '20'
     option ip6ifaceid '::1'
