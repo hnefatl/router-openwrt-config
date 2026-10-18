@@ -1,13 +1,6 @@
-$ORIGIN .
-$TTL 60    ; 1 minute
-ha.keith.collister.xyz    IN SOA    keithdns.collister.xyz. hnefatl.gmail.com. (
-    1      ; serial
-    3600       ; refresh (1 hour)
-    1800       ; retry (30 minutes)
-    604800     ; expire (1 week)
-    600    ; minimum (10 minutes)
-    )
-    NS    keithdns.collister.xyz.
-$TTL 600    ; 10 minutes
-    A    89.34.167.102
-    AAAA 2a01:4b00:bd20:7010:230:59ff:fe28:d000
+$TTL 60
+; generated with dnscontrol 2026-10-18T12:56:46+01:00
+@          300   IN SOA   keithdns.collister.xyz. hnefatl.gmail.com. 2026101800 3600 600 604800 300
+           300   IN NS    keithdns.collister.xyz.
+                 IN A     89.34.167.102
+                 IN AAAA  2a01:4b00:bd20:7010:230:59ff:fe28:d000

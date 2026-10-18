@@ -26,6 +26,8 @@
 
           # To have on hand for firmware flashing.
           dnsmasq
+          # For DNS generation.
+          dnscontrol
         ];
       };
       packages.${system} = import ./images.nix { inherit pkgs openwrt-imagebuilder; };

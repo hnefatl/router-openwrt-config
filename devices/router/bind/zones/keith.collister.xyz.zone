@@ -1,0 +1,14 @@
+$TTL 3600
+; generated with dnscontrol 2026-10-18T12:56:46+01:00
+@          300   IN SOA   keithdns.collister.xyz. hnefatl.gmail.com. 2026101800 3600 600 604800 300
+                 IN NS    keithdns.collister.xyz.
+                 IN A     216.239.32.21
+                 IN A     216.239.34.21
+                 IN A     216.239.36.21
+                 IN A     216.239.38.21
+                 IN AAAA  2001:4860:4802:32::15
+                 IN AAAA  2001:4860:4802:34::15
+                 IN AAAA  2001:4860:4802:36::15
+                 IN AAAA  2001:4860:4802:38::15
+_atproto         IN TXT   "did=did:plc:yrom3tt7zwtpfes5nbuzmr6d"
+blog             IN CNAME hnefatl.github.io.
