@@ -1,8 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
+    # Override using
+    #   nix build --override-input openwrt-imagebuilder git+file:///home/keith/projects/nix-openwrt-imagebuilder .#...
+    # if using a locally-updated hash set.
     openwrt-imagebuilder.url = "github:astro/nix-openwrt-imagebuilder";
-    #openwrt-imagebuilder.url = "path:/home/keith/projects/nix-openwrt-imagebuilder";
   };
   outputs =
     {
