@@ -16,7 +16,7 @@ def mount(target_connection_str: str, dir: pathlib.Path):
                 f"uid={os.getuid()}",
                 "-o",
                 f"gid={os.getgid()}",
-                f"{target_connection_str}:/etc/config",
+                f"{target_connection_str}:/",
                 dir,
             ],
             stdout=sys.stdout,

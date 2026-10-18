@@ -148,24 +148,6 @@ in
 
       # Configure extroot on the ROM via fstab.
       files = pkgs.runCommand "image-files" { } ''
-        mkdir -p "$out/etc/uci-defaults"
-        cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
-        touch /etc/config/authorized_keys
-        ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
-        EOF
-
-        cat > $out/etc/uci-defaults/99-symlink-bind <<EOF
-        mkdir -p /etc/config/bind
-        chown -R bind /etc/config/bind
-        rm -rf /etc/bind
-        ln -sf /etc/config/bind /etc/bind
-        EOF
-
-        cat > $out/etc/uci-defaults/99-symlink-avahi <<EOF
-        touch /etc/config/avahi
-        ln -sf /etc/config/avahi /etc/avahi/avahi-daemon.conf
-        EOF
-
         mkdir -p $out/etc/config
         cat > $out/etc/config/fstab <<EOF
         config global
@@ -207,27 +189,8 @@ in
         "usteer"
         "luci-app-usteer"
       ];
-
-      files = pkgs.runCommand "image-files" { } ''
-        mkdir -p "$out/etc/uci-defaults"
-        cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
-        touch /etc/config/authorized_keys
-        ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
-        EOF
-      '';
     }
   );
 
-  tvswitch = openwrt-imagebuilder.lib.build (
-    hap_ac2_base
-    // {
-      files = pkgs.runCommand "image-files" { } ''
-        mkdir -p "$out/etc/uci-defaults"
-        cat > $out/etc/uci-defaults/99-symlink-dropbear <<EOF
-        touch /etc/config/authorized_keys
-        ln -sf /etc/config/authorized_keys /etc/dropbear/authorized_keys
-        EOF
-      '';
-    }
-  );
+  tvswitch = openwrt-imagebuilder.lib.build hap_ac2_base;
 }

@@ -100,14 +100,11 @@ def main():
 def special_files(root_config_dir: pathlib.Path, output_dir: pathlib.Path) -> Files:
     """Special files that don't follow the per-host structure."""
     return [
-        # There should be a symlink from
-        # `/etc/dropbear/authorized_keys` -> `/etc/config/authorized_keys`
-        # that this takes advantage of.
         File.load(
             sot_path=root_config_dir / "devices/authorized_keys",
-            target_path=output_dir / "authorized_keys",
+            target_path=output_dir / "etc/dropbear/authorized_keys",
             secrets={},
-        )
+        ),
     ]
 
 
